@@ -44,9 +44,15 @@ The first user registered in the application will be granted administrative righ
 ### <a name="headPrerequisites"></a>Prerequisites
 
 * [.NET Framework 4.5.2](https://www.microsoft.com/en-ca/download/details.aspx?id=42642)
-* The project was developed in MS Visual Studio 2015 ([the product page](https://www.visualstudio.com/ru/downloads/?rr=https%3A%2F%2Fwww.microsoft.com%2Fru-ru%2FSoftMicrosoft%2Fvs2015ExpressforW10.aspx)).
+* The project was developed in MS Visual Studio 2015 ([the product page](https://www.visualstudio.com/ru/downloads/?rr=https%3A%2F%2Fwww.microsoft.com%2Fru-ru%2FSoftMicrosoft%2Fvs2015ExpressforW10.aspx))
 
 ### Setting up Dev
+
+## <a name="headConfiguration"></a>Configuration
+
+web.config lying in the root catalogue of the main project serves as the general file for configuration. In the file section *appSettings* the next parameters can be set: 
+* *smtpHost, smtpPort, smtpUserName, smtpPassword* for configuring a mail address which will be used to send messages to the users when registering, resetting password, changing emails or their statuses being altered
+* *aboutUs, fax, phone, mail, youtubeLink, facebookLink* for storing additional contact information shown in the bottom section of the site
 
 ## Api Reference
 
@@ -55,11 +61,15 @@ The api module is available through the base url address by adding the api postf
 * **POST Authentication/Register** with the object *{ name, password, firstName, lastName, patronymicName?, email }*
 * **GET Authentication/LogOut**
 * **GET Authentication/Confirm** with the parameter *confirmationId*, which is a GUID number formed and sent in a link to a new user's email when registering in the application
-* **GET Info/GetBasicInfo** returns the company's contact data *{ fax, phone, mail,	youtubeLink, facebookLink }*
+* **GET Info/GetBasicInfo** returns the company's contact data *{ fax, phone, mail,	youtubeLink, facebookLink }* ([how to configure](#headConfiguration))
 * **GET Info/GetAboutUsInfo** returns a short description from the AboutUs page *{ aboutUs }*
 * **GET Article/GetDefaultCategories** returns an array of the names of default article categories existing as constant strings in the system
-* **GET Article/SearchArticles** searches articles by means of the next parameters *author?, tags?* (a part of the string containing categories), *text?* (it's either a part of the description or name field), *dateStart?, dateEnd?* (a date range of when articles were created), *page=1* (a result page number; the number of items per page is the constant of 10), *colIndex=7* (an index for a sorting column; possible values: NAME = 0, AUTHOR = 1,	TAGS = 2,	ASSIGNED_TO = 3, STATUS = 4, TEXT = 5, ID = 6, DATE = 7), *asc=false* (a direction of sorting results: ascending or otherwise descending). It returns the object *{ articles: [{ id, name, tags, insertDate, status, description, authorId }], articleCount, pageLength, userNames: [], estimates: [] }*
-
+* **GET Article/GetArticleTitles** gives two dictionaries and an outcome as an object *{ articles: { id, authorId, name, tags, insertDate, estimate }, userNames: [] }*, where *userNames* is a dictionary with user identificators as keys along with their names as values
+* **GET Article/ViewArticle** accepts two parameters: *id, userId?*. *userId* indicates that the outcome should contain additional information such as related comments, photos, current article rating. The result is *{ article: { id, authorId, assignedToId, name, description, tags, insertDate, status, content }, updatedDate, comments: [{ id, authorId, responseToId, articleId, content, insertDate, status }], userNames: [], userPhotos: [], estimate, curEstimate }*, where *userNames* and *userPhotos* are dictionaries with user identificators as keys along with the respective objects as values
+* **GET Article/SearchArticles** searches articles by means of the next parameters: *author?, tags?* (a part of the string containing categories), *text?* (it's either a part of the description or name field), *dateStart?, dateEnd?* (a date range of when articles were created), *page = 1* (a result page number; the number of items per page is the constant of 10), *colIndex = 7* (an index for a sorting column; possible values: NAME = 0, AUTHOR = 1,	TAGS = 2,	ASSIGNED_TO = 3, STATUS = 4, TEXT = 5, ID = 6, DATE = 7), *asc=false* (a direction of sorting results: ascending or otherwise descending). It returns the object *{ articles: [{ id, name, tags, insertDate, status, description, authorId }], articleCount, pageLength, userNames: [], estimates: [] }*, whereas *userNames* and *estimates* are dictionaries with user identificators as keys along with the respective objects as values
+* **POST UserInfo/ReplacePassword** accepts an object *{ newPassword, confirmationId }*
+* **GET UserInfo/ResetPassword** requires a parameter *email* where a message for resetting password will be sent if the respective user exists in the data base
+* **GET UserInfo/ConfirmEmail** requires a parameter *confirmationId*
 
 ## Database
 
