@@ -1,0 +1,7 @@
+﻿<nav>
+	<div class="pagination btn-group">
+		<button class="btn btn-primary" type="button" ng-disabled="!pages.length || curPage == 1" ng-click="fnNextPage(curPage-1,addParam)"><span>&laquo;</span></button>
+		<button class="btn btn-primary" type="button" ng-click="fnNextPage($index+1,addParam)" ng-repeat="p in pages track by $index" ng-class="{'active': curPage == $index + 1 }">{{$index + 1}}</button>
+		<button class="btn btn-primary" type="button" ng-disabled="!pages.length || curPage == pages.length" ng-click="fnNextPage(curPage+1,addParam)"><span>&raquo;</span></button>
+	</div>
+</nav>

@@ -1,0 +1,23 @@
+﻿<div class="modal-header">
+	<button type="button" class="close" ng-click="closeModal()">&times;</button>
+	<h4 class="modal-title">New Notifications</h4>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="col-xs-12">
+			<ul style="list-style:none" ng-repeat="n in notifications">
+				<li>
+					<div class="bs-callout bs-callout-info">
+						<h4>
+							<span class="glyphicon glyphicon-calendar"></span> Inserted: {{n.date|date:'medium'}}
+						</h4>
+						<div>{{n.text}} <button ng-click="toHistory(n.articleId, n.historyId)" type="button" class="btn btn-link" title="See the history in details"> >> </button></div>
+					</div>					
+				</li>
+			</ul>
+		</div>
+		<div class="col-xs-offset-1">
+			<button class="btn btn-warning" type="button" ng-click="closeModal(true)">Close And Clear</button>
+		</div>
+	</div>
+</div>

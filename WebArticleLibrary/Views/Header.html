@@ -1,0 +1,57 @@
+﻿<nav class="navbar navbar-inverse navbar-static-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarPanel">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" ui-sref="app">ArticleLibrary</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbarPanel">
+			<ul class="nav navbar-nav">
+				<li ng-class="{'active':section=='app'}"><a ui-sref="app"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+				<li>
+					<a class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Article <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li ng-class="{'active':section==c}" ng-repeat="c in categories"><a ui-sref="app.articlesearch({category:c})"><span class="glyphicon glyphicon-text-color"></span> {{c}}</a></li>
+						<li class="divider"></li>
+						<li ng-class="{'active':section=='searcharticle'}"><a ui-sref="app.articlesearch({category:null})"><span class="glyphicon glyphicon-search"></span> Search</a></li>
+						<li ng-class="{'active':section=='createarticle'}" ng-show="showUser"><a ui-sref="app.articleedit"><span class="glyphicon glyphicon-pencil"></span> Create</a></li>
+					</ul>
+				</li>
+				<li ng-class="{'active':section=='aboutus'}"><a ui-sref="app.aboutus"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<form class="form-inline">
+						<div class="form-group" ng-show="!showUser">
+							<input type="text" class="form-control" placeholder="User" ng-model="userName" />
+						</div>
+						<div class="form-group" ng-show="!showUser">
+							<input type="password" class="form-control" placeholder="Password" ng-model="userPassword" />
+						</div>
+						<div class="form-group" ng-show="!showUser && !loading">
+							<button type="button" ng-click="logIn()" class="btn">Log In</button>
+							<button type="button" ng-click="openModal()" class="btn">Register</button>
+						</div>
+						<div class="form-group text-info" ng-show="loading">
+							<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...
+						</div>
+						<div class="form-group" ng-show="showUser">
+							Current user: <a ui-sref="app.articleinfo">{{userName}}</a>
+							<button type="button" ng-click="logOut()" class="btn">Log Out</button>
+							<button ng-show="notifications && notifications.length" title="Click here to see new notifications" type="button" ng-click="openNotificationModal()" class="btn btn-warning">
+								<span class="glyphicon glyphicon-bell"></span> <span class="badge">{{notifications.length}}</span>
+							</button>
+						</div>
+						<br/>
+						<button ng-show="!showUser && !loading" type="button" class="btn-link" ng-click="resetPasswordModal()">Forgot Password</button>
+						<br/>
+					</form>
+				</li>
+			</ul>
+			<label ng-show="msg" class="text-danger">{{msg}}</label>
+		</div>
+	</div>
+</nav>

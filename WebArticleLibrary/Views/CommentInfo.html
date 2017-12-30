@@ -1,0 +1,92 @@
+﻿<breadcrumb links="'Home:app|Comments'"></breadcrumb>
+
+<ul class="nav nav-tabs">
+	<li><a ui-sref="app.articleinfo">Articles</a></li>
+	<li><a ui-sref="app.properties">Properties</a></li>
+	<li class="active"><a ui-sref="app.commentinfo">Comments</a></li>
+	<li><a ui-sref="app.estimateinfo">Estimates</a></li>
+	<li ng-show="hasAdminStatus(1)"><a ui-sref="app.userinfo">Users</a></li>
+	<li ng-show="hasAdminStatus(1)"><a ui-sref="app.complaintinfo">Complaints</a></li>
+</ul>
+
+<div class="tab-content">
+	<div id="users" class="active tab-pane fade in">
+		<div class="container">
+			<br />
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="col-xs-12 col-sm-8">
+						<div class="panel panel-info">
+							<div class="panel-heading pointer" data-target="#filters" data-toggle="collapse">
+								<label class="panel-title">Filters</label>
+							</div>
+							<div class="panel-body fade collapse" id="filters">
+								<form class="form-inline" ng-submit="getFilteredItems()">
+									<div class="form-group input-group">
+										<span class="input-group-addon glyphicon glyphicon-search"></span>
+										<input type="search" class="input-sm" ng-model="filter.id" placeholder="ID" />
+										<input type="search" class="input-sm" ng-model="filter.articleName" placeholder="Article Name" />
+									</div>
+									<div class="form-group input-group">
+										<span title="Creation date period" class="input-group-addon glyphicon glyphicon-calendar"></span>
+										<input type="date" class="input-sm" ng-model="filter.dateStart" />
+										<input type="date" class="input-sm" ng-model="filter.dateEnd" />
+									</div>
+									<div class="form-group input-group">
+										<span title="Status" class="input-group-addon glyphicon glyphicon-stats"></span>
+										<select class="input-sm" ng-model="filter.status" placeholder="Status">
+											<option value="" selected>-</option>
+											<option ng-repeat="s in statuses" value="{{s}}">{{getCmntStatusCaption(s)}}</option>
+										</select>
+									</div>
+									<button type="submit" class="btn btn-success">Search</button>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-10 btn-group btn-group-sm">
+						<button ng-disabled="sending || !selectedCmnt" title="Remove" type="button" class="btn btn-default" ng-click="removeComment()">
+							<span class="glyphicon glyphicon-remove"></span>
+						</button>
+					</div>
+					<div class="col-xs-12 col-sm-8">
+						<table class="table table-hover table-striped" ng-disabled="sending">
+							<tr>
+								<th>#</th>
+								<th><sort-btn name="'Id'" col-index="6" cur-col-index="col" asc="colAsc" fn-click="sortItems"></sort-btn></th>
+								<th><sort-btn name="'Date'" col-index="7" cur-col-index="col" asc="colAsc" fn-click="sortItems"></sort-btn></th>
+								<th><sort-btn name="'Article'" col-index="8" cur-col-index="col" asc="colAsc" fn-click="sortItems"></sort-btn></th>
+								<th><sort-btn name="'State'" col-index="4" cur-col-index="col" asc="colAsc" fn-click="sortItems"></sort-btn></th>
+							</tr>
+							<tr ng-repeat="c in cmnts" ng-class="{'text-primary': selectedCmnt.id == c.id}" ng-click="selectCmntRow(c)">
+								<td>{{$index + 1}}</td>
+								<td>{{c.id}}</td>
+								<td>{{c.insertDate|date:'medium'}}</td>								
+								<td><a ui-sref="app.articleview({id:c.articleId})"><limited-val value="getArticleName(c)" length="50"></limited-val></a></td>
+								<td>{{getCmntStatusCaption(c.status)}}</td></tr>
+						</table>
+						<pagination pages="pages" cur-page="page" fn-next-page="goToPage"></pagination>
+					</div>
+					<div class="col-xs-12 col-sm-4">
+						<div class="panel panel-info" ng-show="selectedCmnt">
+							<div class="panel-heading pointer" data-toggle="collapse" data-target="#commentInfo">
+								<span class="panel-title">Additional Information</span>
+							</div>
+							<div style="overflow:hidden;" class="panel-body fade in" id="commentInfo">
+								<ul>
+									<li ng-show="getRelatedCommentCount()"><strong>Has related comments: <button ng-click="goToCommentsList()" class="btn-link">{{getRelatedCommentCount()}}</button></strong></li>
+									<li ng-show="getComplaintCount()"><strong>Has {{getComplaintCount()}} complaints</strong></li>
+									<li><strong>Content: </strong><div class="text-info" ng-bind-html="getCommentContent()"></div></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<loading msg="msg" sending="sending" is-error="isError"></loading>
+	</div>
+</div>

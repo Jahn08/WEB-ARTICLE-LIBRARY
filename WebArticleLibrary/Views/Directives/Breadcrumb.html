@@ -1,0 +1,6 @@
+﻿<ol class="breadcrumb"> 
+	<li ng-repeat="s in states">
+		<a ng-if="s.state" ui-sref="{{s.state}}">{{s.name}}</a>
+		<span ng-if="!s.state" class="active">{{s.name}}</span>
+	</li>
+</ol>

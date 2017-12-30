@@ -1,0 +1,29 @@
+﻿<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-offset-1 col-xs-5 col-sm-offset-1 col-sm-2">
+				<h5>Links:</h5>
+				<ul>
+					<li><a ui-sref="app">Home</a></li>
+					<li><a ui-sref="app.articlesearch({category:null})">Articles</a></li>
+					<li><a ui-sref="app.aboutus">About</a></li>
+				</ul>
+			</div>
+			<div class="col-xs-6 col-sm-4">
+				<h5>Address:</h5>
+				<address>
+					<i class="fa fa-mobile-phone"></i>: {{info.phone}}<br />
+					<i class="fa fa-fax"></i>: {{info.fax}}<br />
+					<i class="fa fa-envelope"></i>: <a href="mailto:{{info.mail}}">{{info.mail}}</a>
+				</address>
+			</div>
+			<div class="col-xs-12 col-sm-5">
+				<div class="nav navbar-nav">
+					<a class="btn" href="{{info.facebookLink}}"><i class="fa fa-facebook"></i></a>
+					<a class="btn" href="{{info.youtubeLink}}"><i class="fa fa-youtube"></i></a>
+					<a class="btn" href="mailto:{{info.mail}}"><i class="fa fa-envelope-o"></i></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>

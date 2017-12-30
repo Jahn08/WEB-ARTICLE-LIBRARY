@@ -1,0 +1,110 @@
+﻿<breadcrumb links="'Home:app|Properties'"></breadcrumb>
+
+<ul class="nav nav-tabs">
+	<li><a ui-sref="app.articleinfo">Articles</a></li>
+	<li class="active"><a ui-sref="app.properties">Properties</a></li>
+	<li><a ui-sref="app.commentinfo">Comments</a></li>
+	<li><a ui-sref="app.estimateinfo">Estimates</a></li>
+	<li ng-show="hasAdminStatus()"><a ui-sref="app.userinfo">Users</a></li>
+	<li ng-show="hasAdminStatus(1)"><a ui-sref="app.complaintinfo">Complaints</a></li>
+</ul>
+
+<div class="tab-content">
+	<div id="properties" class="active tab-pane fade in">
+		<br />
+		<div class="container">
+			<div class="row">
+				<form class="form-horizontal col-xs-12 col-sm-7" ng-submit="save()">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Photo:</label>
+						<div class="col-sm-8 btn-group">
+							<button class="btn glyphicon glyphicon-remove" ng-click="removePhoto()" title="Remove photo" type="button"></button>
+							<input accept="image/*" type="file" id="filePicture" class="btn"/>
+						</div>
+						<div class="col-sm-push-2 col-sm-10">
+							<img ng-src="{{getUserPhoto()}}" id="imgPicture" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Name:</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" ng-model="ui.name" required maxlength="10" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Old Password:</label>
+						<div class="col-sm-10">
+							<input class="form-control" type="password" ng-model="ui.password" maxlength="20" />
+							<span ng-show="ui.newPassword && !ui.password" class="text-danger">To change the password the old one should be entered</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">New Password:</label>
+						<div class="col-sm-10">
+							<input class="form-control" type="password" ng-model="ui.newPassword" maxlength="20" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Email:</label>
+						<div class="col-sm-10">
+							<input class="form-control" type="email" ng-model="ui.email" required maxlength="50" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">First Name:</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" ng-model="ui.firstName" required maxlength="50" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-2">Last Name:</label>
+						<div class="col-sm-10">
+							<input class="form-control" type="text" ng-model="ui.lastName" required maxlength="50" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-2">Patronymic Name:</label>
+						<div class="col-sm-10">
+							<input class="form-control" type="text" ng-model="ui.patronymicName" maxlength="50" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-2">Show private settings:</label>
+						<label class="checkbox-inline col-xs-8" title="To let other users see your email and real name">
+							<input class="col-sm-2" type="checkbox" ng-model="ui.showPrivateInfo" />
+						</label>
+					</div>
+					<button type="submit" class="btn btn-success" ng-disabled="sending || (ui.newPassword && !ui.password)">Save</button>
+				</form>
+				<div class="col-xs-12 col-sm-5">
+					<div class="panel panel-info">
+						<div class="panel-heading pointer" data-toggle="collapse" data-target="#privateUserHistory">
+							<span class="panel-title">Additional Information</span>
+						</div>
+						<div style="overflow:hidden;" class="panel-body fade in" id="privateUserHistory">
+							<ul>
+								<li><strong>The date of creation: <span class="text-info">{{ui.insertDate | date: 'medium'}}</span></strong></li>
+								<li><strong>Current role: <span class="text-info">{{getStatusCaption(ui.status)}}</span></strong></li>
+								<li title="If you did not initiate the process, your account might have been hacked" ng-show="ui.newEmailExpirationDate">
+									<strong> The new email address expiration date: <span class="text-warning">{{ui.newEmailExpirationDate | date: 'medium'}}</span> <span class="glyphicon glyphicon-info-sign"></span></strong>
+								</li>
+								<li title="If you did not initiate the process, your account might have been hacked" ng-show="ui.resetPasswordExpirationDate">
+									<strong>The resetting password expiration date: <span class="text-warning">{{ui.resetPasswordExpirationDate | date: 'medium'}}</span> <span class="glyphicon glyphicon-info-sign"></span></strong>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<loading msg="msg" sending="sending" is-error="isError"></loading>
+	</div>
+</div>

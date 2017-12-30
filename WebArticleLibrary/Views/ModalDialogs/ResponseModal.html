@@ -1,0 +1,16 @@
+﻿<div class="modal-header">
+	<button type="button" class="close" ng-click="closeModal()">&times;</button>
+	<h4 class="modal-title">Sending additional comment</h4>
+</div>
+<div class="modal-body">
+	<form class="form-horizontal" ng-submit="save()">
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Content:</label>
+			<div class="col-sm-10">
+				<textarea ng-readonly="readonly" class="form-control" style="max-width:400px" ng-model="content" required maxlength="200"></textarea>
+			</div>
+		</div>
+		<button class="btn btn-warning" type="button" ng-click="closeModal()">Close</button>
+		<button class="btn btn-success" type="submit" ng-disabled="!content || content.length < 10">Submit</button>
+	</form>
+</div>

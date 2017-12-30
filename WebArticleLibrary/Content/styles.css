@@ -1,0 +1,132 @@
+﻿.glyphicon-refresh-animate {
+	animation: spin 1s infinite linear;
+	-moz-animation: mspin 1s infinite linear;
+	-webkit-animation: wspin 1s infinite linear;
+}
+
+@keyframes spin {
+	from { transform: scale(1) rotate(0deg); }
+	to { transform: scale(1) rotate(360deg); }
+}
+
+@-moz-keyframes mspin {
+	from { -moz-transform: scale(1) rotate(0deg); }
+	to { -moz-transform: scale(1) rotate(360deg); }
+}
+
+@-webkit-keyframes wspin {
+	from { -webkit-transform: scale(1) rotate(0deg); }
+	to { -webkit-transform: scale(1) rotate(360deg); }
+}
+
+.pointer:hover {
+	cursor: pointer;
+}
+
+.editor, #comment {
+	overflow:scroll;
+	border: solid 1px skyblue;
+}
+
+.editor {
+	height:500px;
+}
+
+#comments {
+	height:500px;
+	overflow-y:scroll;
+}
+
+#comment {
+	height:150px;
+}
+
+.content {
+	min-height: 500px;
+}
+
+.underlined {
+	text-decoration: underline;
+}
+
+.left-sm-spacious {
+	padding-left: 5px;
+}
+
+.media-comment {
+	box-shadow: -1px -2px 12px 0px #5bc0de;
+}
+
+.comment-chosen {
+	box-shadow: -1px -2px 12px 0px darkorange;
+}
+
+.media-comment-content:hover {
+	cursor: pointer;
+}
+
+.comment-half-opaque {
+	opacity: 0.5;
+}
+
+.estimate-active {
+	font-size:x-large;
+}
+
+#imgPicture {
+	width:100px;
+	height:100px;
+	background-size:contain;
+}
+
+.carousel .item {
+  height:500px;
+}
+
+.carousel .item img {
+	opacity:0.6;
+}
+
+.article-content {
+	min-height:100px;
+}
+
+/* Bootstrap's callouts */
+.bs-callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+.bs-callout > h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+.bs-callout p:last-child {
+    margin-bottom: 0;
+}
+.bs-callout code {
+    border-radius: 3px;
+}
+.bs-callout+.bs-callout {
+    margin-top: -5px;
+}
+.bs-callout-success {
+    border-left-color: #5cb85c;
+}
+.bs-callout-success > h4 {
+    color: #5cb85c;
+}
+.bs-callout-warning {
+    border-left-color: #f0ad4e;
+}
+.bs-callout-warning > h4 {
+    color: #f0ad4e;
+}
+.bs-callout-info {
+    border-left-color: #5bc0de;
+}
+.bs-callout-info > h4 {
+    color: #5bc0de;
+}

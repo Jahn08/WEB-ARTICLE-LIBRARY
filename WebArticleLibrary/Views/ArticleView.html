@@ -1,0 +1,175 @@
+﻿<breadcrumb links="'Home:app|Article View'"></breadcrumb>
+
+<div class="container">
+	<div ng-show="!sending" class="row">
+		<div class="col-xs-12">
+			<h2>{{art.name}}</h2>
+			<h4><a ng-repeat="t in art.hashTags" ui-sref="app.articlesearch({category:t})">#{{t}} </a></h4>
+			<h4>{{art.tempTags}}</h4>
+			<div class="bs-callout bs-callout-warning">
+				<div class="media">
+					<div class="media-left">
+						<img class="media-object" ng-src="{{getUserPhoto(art.authorId)}}" />
+					</div>
+					<div class="media-body">
+						<div class="media-heading">
+							<h4>
+								<span><span class="glyphicon glyphicon-user"></span><button class="btn btn-link" ng-click="searchForUserArticles()" type="button"><h4>{{authorName}}</h4></button></span>
+								<span><span class="glyphicon glyphicon-calendar"></span> Inserted: {{art.insertDate|date:'medium'}}</span>
+								<br />
+								<span ng-show="ui"><span class="glyphicon glyphicon-time"></span><button type="button" class="btn btn-link" ng-click="showHistory()"><h4>history</h4></button></span>
+								<span><span class="glyphicon glyphicon-calendar"></span> Updated: {{updatedDate|date:'medium'}}</span>
+							</h4>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div ng-show="!isError">
+				<div class="bs-callout bs-callout-info">
+					<div><h4><b><i>{{art.description}}</i></b></h4></div>
+				</div>
+				<div class="bs-callout bs-callout-success">
+					<div class="article-content" ng-bind-html="art.tempContent" tabindex="1" id="artContent"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<loading msg="msg" sending="sending" is-error="isError"></loading>
+	
+	<div ng-show="!sending && !isError">
+		<div class="row">
+			<div class="col-xs-12">
+				<span ng-class="{'text-success': estimate >= 0, 'text-danger': 0 > estimate}">Current rating: {{estimate}}</span>
+			</div>
+		</div>		
+		<div class="row" ng-show="comment">
+			<div class="col-xs-12" ng-show="art.authorId != ui.id">
+				<button ng-disabled="estimateState>0" type="button" class="btn-link" title="Like" ng-click="assess(true)"><span class="glyphicon glyphicon-thumbs-up text-success" ng-class="{'estimate-active':estimateState>0}"></span></button>
+				<button ng-disabled="estimateState<0" type="button" class="btn-link" title="Dislike" ng-click="assess()"><span class="glyphicon glyphicon-thumbs-down text-danger" ng-class="{'estimate-active':estimateState<0}"></span></button>
+				<button type="button" class="btn-link" title="Complain" ng-click="articleComplaint()"><span class="glyphicon glyphicon-exclamation-sign text-warning"></span></button>
+				<button type="button" ng-show="hasAdminStatus()" class="btn-link" title="Ban" ng-click="articleBan()"><span class="glyphicon glyphicon-ban-circle text-warning"></span></button>
+			</div>
+			<div class="col-xs-12">
+				<div class="panel panel-info">
+					<div class="panel-heading pointer" data-toggle="collapse" data-target="#comments">Comments</div>
+					<div class="panel-body fade collapse" ng-class="{'in':showComments,'collapse':!showComments}" id="comments">
+						<button title="Show all comments" type="button" ng-disabled="showBanned" class="btn btn-default" ng-click="showBanned=true">
+							<span class="glyphicon glyphicon-eye-open"></span>
+						</button>
+						<button title="Hide unavailable comments" type="button" ng-disabled="!showBanned" class="btn btn-default" ng-click="showBanned=false">
+							<span class="glyphicon glyphicon-eye-close"></span>
+						</button>
+						<div ng-show="!(commentIsBlocked(cmnt.status) || commentIsDeleted(cmnt.status)) || showBanned" ng-repeat="cmnt in comments" id="{{cmnt.id}}" ng-class="{'comment-chosen': comment.responseToId == cmnt.id, 'comment-half-opaque': commentIsBlocked(cmnt.status)}" class="media media-comment">
+							<div class="media-left">
+								<img ng-if="cmnt && cmnt.authorId" class="media-object" ng-src="{{getUserPhoto(cmnt.authorId)}}" />
+							</div>
+							<div class="media-body">
+								<h4 class="media-heading">
+									#{{cmnt.id}} {{cmnt.author}}, {{cmnt.insertDate|date:'medium'}}
+									<button class="btn-link" type="button" ng-show="cmnt.responseToId" ng-disabled="commentIsDeletedById(cmnt.responseToId)" ng-click="toComment(cmnt.responseToId)">to the comment #{{cmnt.responseToId}}</button>
+								</h4>
+								<div ng-show="!commentIsBlocked(cmnt.status) && !commentIsDeleted(cmnt.status)">
+									<div class="media-comment-content" ng-click="respondTo(cmnt.id)" ng-bind-html="cmnt.tempContent"></div>
+
+									<div ng-show="cmnt.authorId != ui.id">
+										<button type="button" class="btn-link" title="Complain" ng-click="commentComplaint(cmnt.id)"><span class="glyphicon glyphicon-exclamation-sign text-warning"></span></button>
+										<button type="button" ng-show="hasAdminStatus()" class="btn-link" title="Ban" ng-click="commentBan(cmnt)"><span class="glyphicon glyphicon-ban-circle text-warning"></span></button>
+									</div>
+									<button type="button" ng-show="cmnt.authorId == ui.id" class="btn-link" title="Remove" ng-click="commentRemove(cmnt)"><span class="glyphicon glyphicon-remove text-warning"></span></button>
+								</div>
+								<div ng-show="commentIsBlocked(cmnt.status)">
+									<div class="text-warning">The content was banned</div>
+									<button type="button" ng-show="hasAdminStatus()" class="btn-link" title="Recover" ng-click="commentBan(cmnt,true)"><span class="glyphicon glyphicon-ok-circle text-warning"></span></button>
+								</div>
+								<div ng-show="commentIsDeleted(cmnt.status)">
+									<div class="text-warning">The content was removed</div>
+								</div>								
+							</div>
+						</div>
+						<br />
+						<form name="addCommentForm" class="form-horizontal" ng-submit="sendComment()">
+							<div class="btn-toolbar" data-role="editor-toolbar" data-target="#comment">
+								<div class="btn-group">
+									<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" title="" data-original-title="Font"><i class="glyphicon glyphicon-font"></i><b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li><a data-edit="fontName Serif" style="font-family:'Serif'">Serif</a></li>
+										<li><a data-edit="fontName Sans" style="font-family:'Sans'">Sans</a></li>
+										<li><a data-edit="fontName Arial" style="font-family:'Arial'">Arial</a></li>
+										<li><a data-edit="fontName Arial Black" style="font-family:'Arial Black'">Arial Black</a></li>
+										<li><a data-edit="fontName Courier" style="font-family:'Courier'">Courier</a></li>
+										<li><a data-edit="fontName Courier New" style="font-family:'Courier New'">Courier New</a></li>
+										<li><a data-edit="fontName Comic Sans MS" style="font-family:'Comic Sans MS'">Comic Sans MS</a></li>
+										<li><a data-edit="fontName Helvetica" style="font-family:'Helvetica'">Helvetica</a></li>
+										<li><a data-edit="fontName Impact" style="font-family:'Impact'">Impact</a></li>
+										<li><a data-edit="fontName Lucida Grande" style="font-family:'Lucida Grande'">Lucida Grande</a></li>
+										<li><a data-edit="fontName Lucida Sans" style="font-family:'Lucida Sans'">Lucida Sans</a></li>
+										<li><a data-edit="fontName Tahoma" style="font-family:'Tahoma'">Tahoma</a></li>
+										<li><a data-edit="fontName Times" style="font-family:'Times'">Times</a></li>
+										<li><a data-edit="fontName Times New Roman" style="font-family:'Times New Roman'">Times New Roman</a></li>
+										<li><a data-edit="fontName Verdana" style="font-family:'Verdana'">Verdana</a></li>
+									</ul>
+								</div>
+								<div class="btn-group">
+									<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" title="" data-original-title="Font Size"><i class="glyphicon glyphicon-text-height"></i>&nbsp;<b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
+										<li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
+										<li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
+									</ul>
+								</div>
+								<div class="btn-group">
+									<a class="btn btn-primary" data-edit="bold" title="" data-original-title="Bold (Ctrl/Cmd+B)"><i class="glyphicon glyphicon-bold"></i></a>
+									<a class="btn btn-primary" data-edit="italic" title="" data-original-title="Italic (Ctrl/Cmd+I)"><i class="glyphicon glyphicon-italic"></i></a>
+									<a class="btn btn-primary" data-edit="underline" title="" data-original-title="Underline (Ctrl/Cmd+U)"><i class="glyphicon glyphicon-text-width"></i></a>
+								</div>
+								<div class="btn-group">
+									<a class="btn btn-primary" data-edit="insertunorderedlist" title="" data-original-title="Bullet list"><i class="glyphicon glyphicon-list"></i></a>
+									<a class="btn btn-primary" data-edit="insertorderedlist" title="" data-original-title="Number list"><i class="glyphicon glyphicon-list-alt"></i></a>
+									<a class="btn btn-primary" data-edit="outdent" title="" data-original-title="Reduce indent (Shift+Tab)"><i class="glyphicon glyphicon-indent-left"></i></a>
+									<a class="btn btn-primary" data-edit="indent" title="" data-original-title="Indent (Tab)"><i class="glyphicon glyphicon-indent-right"></i></a>
+								</div>
+								<div class="btn-group">
+									<a class="btn btn-primary" data-edit="justifyleft" title="" data-original-title="Align Left (Ctrl/Cmd+L)"><i class="glyphicon glyphicon-align-left"></i></a>
+									<a class="btn btn-primary" data-edit="justifycenter" title="" data-original-title="Center (Ctrl/Cmd+E)"><i class="glyphicon glyphicon-align-center"></i></a>
+									<a class="btn btn-primary" data-edit="justifyright" title="" data-original-title="Align Right (Ctrl/Cmd+R)"><i class="glyphicon glyphicon-align-right"></i></a>
+									<a class="btn btn-primary" data-edit="justifyfull" title="" data-original-title="Justify (Ctrl/Cmd+J)"><i class="glyphicon glyphicon-align-justify"></i></a>
+								</div>
+								<div class="btn-group">
+									<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" title="" data-original-title="Hyperlink"><i class="glyphicon glyphicon-link"></i></a>
+									<div class="dropdown-menu input-append">
+										<input class="span2" placeholder="URL" type="text" data-edit="createLink">
+										<button class="btn" type="button">Add</button>
+									</div>
+									<a class="btn btn-primary" data-edit="unlink" title="" data-original-title="Remove Hyperlink"><i class="glyphicon glyphicon-remove"></i></a>
+								</div>
+								<div class="btn-group">
+									<a class="btn btn-primary" title="" id="pictureBtn" data-original-title="Insert picture (or just drag &amp; drop)"><i class="glyphicon glyphicon-picture"></i></a>
+									<input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" style="opacity: 0; position: absolute; top: 0px; left: 0px; width: 37px; height: 30px;">
+								</div>
+								<div class="btn-group">
+									<a class="btn btn-primary" data-edit="undo" title="" data-original-title="Undo (Ctrl/Cmd+Z)"><i class="glyphicon glyphicon-backward"></i></a>
+									<a class="btn btn-primary" data-edit="redo" title="" data-original-title="Redo (Ctrl/Cmd+Y)"><i class="glyphicon glyphicon-forward"></i></a>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-xs-12">
+									<div class="form-control" id="comment" ng-keyup="onTextInput()" contenteditable="true"></div>
+									<div ng-show="comment.responseToId">
+										<button type="button" class="btn-link" ng-click="toComment(comment.responseToId)">As a response to the comment</button>
+										<button type="button" class="btn-link" ng-click="cancelResponse()">(cancel)</button>
+									</div>
+									<span ng-show="!comment.content" class="text-danger">The comment content is empty</span>
+								</div>
+							</div>
+							<button type="submit" class="btn btn-info" ng-disabled="sending || !comment.content">Send</button>
+						</form>
+					</div>
+				</div>
+			</div>	
+		</div>
+	</div>
+
+	<div class="row">
+		<button type="button" ng-click="close()" class="btn btn-warning">Close</button>
+	</div>
+</div>

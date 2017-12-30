@@ -1,0 +1,85 @@
+﻿<breadcrumb links="'Home:app|Article Search'"></breadcrumb>
+
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<label class="panel-title">Search criteria</label>
+				</div>
+				<div class="panel-body">
+					<form class="form-horizontal" ng-submit="search()">
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-2">Text:</label>
+							<div class="col-xs-12 col-sm-10 input-group">
+								<span class="glyphicon glyphicon-search input-group-addon"></span>
+								<input class="form-control" type="search" ng-model="filter.text" placeholder="Description, name" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-2">Author:</label>
+							<div class="col-xs-12 col-sm-10 input-group">
+								<span class="glyphicon glyphicon-search input-group-addon"></span>
+								<input class="form-control" type="search" ng-model="filter.author" placeholder="Author" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-2">Tags:</label>
+							<div class="col-xs-12 col-sm-10 input-group">
+								<select name="categories" id="categories" class="form-control" ng-model="filter.tags" ng-change="OnCategoryChange()" multiple ng-options="item for item in allCategories"></select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-xs-12 col-sm-2">Insert date period:</label>
+							<div class="col-xs-12 col-sm-4">
+								<div class="input-group">
+									<span class="glyphicon glyphicon-calendar input-group-addon"></span>
+									<input class="form-control" type="date" ng-model="filter.dateStart" />
+								</div>
+								<div class="input-group">
+									<span class="glyphicon glyphicon-calendar input-group-addon"></span>
+									<input class="form-control" type="date" ng-model="filter.dateEnd" />
+								</div>
+							</div>
+						</div>
+						<button class="btn btn-success">Search</button>
+					</form>
+				</div>
+			</div>			
+		</div>
+		<div class="col-xs-12">
+			<div class="col-xs-12">
+				<label class="col-xs-12 col-sm-2 control-label">Sort by:</label>
+				<div class="col-xs-12 col-sm-6">
+					<select class="form-control" ng-change="search()" ng-model="col">
+						<option ng-selected="c.val==col" ng-repeat="c in columns" ng-value="c.val">{{c.name}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-xs-12">
+				<label class="col-xs-12 col-sm-2 control-label">Sorting direction:</label>
+				<div class="col-xs-12 col-sm-6">
+					<select class="form-control" ng-change="search()" ng-model="colAsc">
+						<option selected="selected" ng-value="true">Ascending</option>
+						<option ng-value="false">Descending</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<loading msg="msg" sending="sending" is-error="isError"></loading>
+			<ul class="list-unstyled">
+				<li ng-repeat="a in articles">
+					<div class="bs-callout bs-callout-info">
+						<h3><a ui-sref="app.articleview({id:a.id})">{{a.name}}</a></h3>
+						<h4><a ng-repeat="t in a.hashTags" ui-sref="app.articlesearch({category:t,author:null})">#{{t}} </a></h4>
+						<span><span class="glyphicon glyphicon-user"></span> <a ui-sref="app.articlesearch({category:null,author:a.author})">{{a.author}}</a></span> 
+						<span><span class="glyphicon glyphicon-calendar"></span> {{a.insertDate|date:'medium'}}</span>
+						<h5>{{a.description}}</h5>
+					</div>
+				</li>
+			</ul>
+			<pagination pages="pages" cur-page="page" fn-next-page="goToPage"></pagination>
+		</div>
+	</div>
+</div>

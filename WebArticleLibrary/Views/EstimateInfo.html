@@ -1,0 +1,72 @@
+﻿<breadcrumb links="'Home:app|Estimates'"></breadcrumb>
+
+<ul class="nav nav-tabs">
+	<li><a ui-sref="app.articleinfo">Articles</a></li>
+	<li><a ui-sref="app.properties">Properties</a></li>
+	<li><a ui-sref="app.commentinfo">Comments</a></li>
+	<li class="active"><a ui-sref="app.estimateinfo">Estimates</a></li>
+	<li ng-show="hasAdminStatus(1)"><a ui-sref="app.userinfo">Users</a></li>
+	<li ng-show="hasAdminStatus(1)"><a ui-sref="app.complaintinfo">Complaints</a></li>
+</ul>
+
+<div class="tab-content">
+	<div id="users" class="active tab-pane fade in">
+		<div class="container">
+			<br />
+			<div class="row">
+				<div class="col-xs-12 col-sm-8">
+					<div class="panel panel-info">
+						<div class="panel-heading pointer" data-target="#filters" data-toggle="collapse">
+							<label class="panel-title">Filters</label>
+						</div>
+						<div class="panel-body fade collapse" id="filters">
+							<form class="form-inline" ng-submit="getFilteredItems()">
+								<div class="form-group input-group">
+									<span class="input-group-addon glyphicon glyphicon-search"></span>
+									<input type="search" class="input-sm" ng-model="filter.article" placeholder="Article Name" />
+								</div>
+								<div class="form-group input-group">
+									<span title="Creation date period" class="input-group-addon glyphicon glyphicon-calendar"></span>
+									<input type="date" class="input-sm" ng-model="filter.dateStart" />
+									<input type="date" class="input-sm" ng-model="filter.dateEnd" />
+								</div>
+								<div class="form-group input-group">
+									<span title="Status & Entity Type" class="input-group-addon glyphicon glyphicon-stats"></span>
+									<select class="input-sm" ng-model="filter.estimate" placeholder="Estimate">
+										<option value="" selected>-</option>
+										<option ng-repeat="s in statuses" value="{{s}}">{{getEstStatusCaption(s)}}</option>
+									</select>
+								</div>
+								<button type="submit" class="btn btn-success">Search</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12">
+					<div class="col-xs-12 col-sm-8">
+						<table class="table table-hover table-striped" ng-disabled="sending">
+							<tr>
+								<th>#</th>
+								<th><sort-btn name="'Date'" col-index="7" cur-col-index="col" asc="colAsc" fn-click="sortItems"></sort-btn></th>
+								<th><sort-btn name="'Article'" col-index="8" cur-col-index="col" asc="colAsc" fn-click="sortItems"></sort-btn></th>
+								<th><sort-btn name="'Estimate'" col-index="4" cur-col-index="col" asc="colAsc" fn-click="sortItems"></sort-btn></th>
+							</tr>
+							<tr ng-repeat="e in ests" ng-class="{'text-primary': selectedEst.id == e.id}" ng-click="selectEstRow(e)">
+								<td>{{$index + 1}}</td>
+								<td>{{e.insertDate|date:'medium'}}</td>								
+								<td><a ui-sref="app.articleview({id:e.articleId})"><limited-val value="getArticleName(e)" length="50"></limited-val></a></td>
+								<td>{{getEstStatusCaption(e.estimate)}}</td></tr>
+						</table>
+						<pagination pages="pages" cur-page="page" fn-next-page="goToPage"></pagination>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<loading msg="msg" sending="sending" is-error="isError"></loading>
+		</div>
+	</div>
+</div>

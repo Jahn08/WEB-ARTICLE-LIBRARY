@@ -1,0 +1,6 @@
+﻿<div class="row">
+	<div class="col-xs-12" ng-show="msg">
+		<span ng-show="sending" class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+		<span ng-class="{'text-danger': isError, 'text-info': !isError}">{{msg}}</span>
+	</div>
+</div>

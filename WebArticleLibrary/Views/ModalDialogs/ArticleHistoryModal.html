@@ -1,0 +1,48 @@
+﻿<div class="modal-header">
+	<button type="button" class="close" ng-click="closeModal()">&times;</button>
+	<h4 class="modal-title">History Of Article <span>"{{artName}}"</span></h4>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="col-xs-12">
+			<ul style="list-style:none" ng-repeat="i in (filtered.length ? filtered: items)">
+				<li>
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<label class="panel-title">{{i.date|date:'medium'}} by {{i.author}}</label>
+						</div>
+						<div class="panel-body">
+							<table class="table table-hover">
+								<thead style="background:#ddd">
+									<tr>
+										<th>Change</th>
+										<th>Old Value</th>
+										<th>New Value</th>
+									</tr>
+								</thead>
+								<tr title="Selected history item" ng-class="{'danger':selectedId==h.id}" ng-repeat="h in i.history">
+									<th>{{h.object}} 
+										<span ng-if="h.objectId">
+											<button class="btn btn-link" title="To the article" ng-show="h.toArticle && !filtered.length" ng-click="goToArticle(h.objectId)"> >> </button>
+											<button class="btn btn-link" title="To the comment" ng-show="h.toComment && !filtered.length" ng-click="goToArticle(h.articleId, h.objectId)"> >> </button>
+											<button class="btn btn-link" title="Filter by the object" ng-hide="h.toArticle || filtered.length" ng-click="goToObject(h.object, h.objectId)">#{{h.objectId}}</button>
+											<span ng-show="filtered.length">#{{h.objectId}}</span>
+										</span>
+									</th>
+
+									<th ng-if="!h.oldValue && !h.newValue" colspan="2">{{GetValueDescription(h.object)}}</th>
+									<th ng-if="h.oldValue || h.newValue">{{h.oldValue}}</th>
+									<th ng-if="h.oldValue || h.newValue">{{h.newValue}}</th>
+								</tr>
+							</table>
+						</div>
+					</div>					
+				</li>
+			</ul>
+		</div>
+		<div class="col-xs-offset-1">
+			<button class="btn btn-success" ng-show="filtered.length" type="button" ng-click="exitObject()"><<</button>
+			<button class="btn btn-warning" type="button" ng-click="closeModal()">Close</button>
+		</div>
+	</div>
+</div>

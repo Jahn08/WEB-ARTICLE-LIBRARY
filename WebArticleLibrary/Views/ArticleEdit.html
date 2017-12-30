@@ -1,0 +1,152 @@
+﻿<breadcrumb links="'Home:app|Articles:app.articleinfo|Article Edit'"></breadcrumb>
+
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12" ng-class="{'col-sm-9': amendingMode }">
+			<form name="editArticleForm" class="form-horizontal" ng-submit="createArticle()">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 control-label">Name:</label>
+					<div class="col-xs-12 col-sm-10">
+						<input name="name" class="form-control" ng-disabled="readMode" type="text" ng-model="art.name" required />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 control-label">Description:</label>
+					<div class="col-xs-12 col-sm-10">
+						<textarea class="form-control" id="comment" ng-disabled="readMode" maxlength="500" ng-model="art.description" required />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 control-label">Tags:</label>
+					<div class="col-xs-12 col-sm-10">
+						<div>
+							<select name="categories" ng-disabled="readMode" id="categories" class="form-control" ng-model="art.tempTags" ng-change="OnCategoryChange()" multiple required ng-options="item for item in allCategories"></select>
+						</div>
+						<span ng-show="editArticleForm.$dirty && editArticleForm.$error.tooManyCategories" class="text-danger">There cannot be more than 50 symbols for categories</span>
+					</div>
+				</div>
+				<div class="panel panel-danger" ng-show="art.reviewedContent">
+					<div class="panel-heading pointer" data-toggle="collapse" data-target="#reviewedDraft">
+						<span class="panel-title">Reviewed Draft</span>
+					</div>
+					<div class="panel-body fade collapse" ng-class="{'in':amendingMode}" id="reviewedDraft">
+						<div class="col-xs-12">
+							<div class="form-control editor" contenteditable="false" id="reviewedContent"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12">
+					<div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
+						<div class="btn-group">
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" title="Font" data-original-title="Font"><i class="glyphicon glyphicon-font"></i><b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a data-edit="fontName Serif" style="font-family:'Serif'">Serif</a></li>
+								<li><a data-edit="fontName Sans" style="font-family:'Sans'">Sans</a></li>
+								<li><a data-edit="fontName Arial" style="font-family:'Arial'">Arial</a></li>
+								<li><a data-edit="fontName Arial Black" style="font-family:'Arial Black'">Arial Black</a></li>
+								<li><a data-edit="fontName Courier" style="font-family:'Courier'">Courier</a></li>
+								<li><a data-edit="fontName Courier New" style="font-family:'Courier New'">Courier New</a></li>
+								<li><a data-edit="fontName Comic Sans MS" style="font-family:'Comic Sans MS'">Comic Sans MS</a></li>
+								<li><a data-edit="fontName Helvetica" style="font-family:'Helvetica'">Helvetica</a></li>
+								<li><a data-edit="fontName Impact" style="font-family:'Impact'">Impact</a></li>
+								<li><a data-edit="fontName Lucida Grande" style="font-family:'Lucida Grande'">Lucida Grande</a></li>
+								<li><a data-edit="fontName Lucida Sans" style="font-family:'Lucida Sans'">Lucida Sans</a></li>
+								<li><a data-edit="fontName Tahoma" style="font-family:'Tahoma'">Tahoma</a></li>
+								<li><a data-edit="fontName Times" style="font-family:'Times'">Times</a></li>
+								<li><a data-edit="fontName Times New Roman" style="font-family:'Times New Roman'">Times New Roman</a></li>
+								<li><a data-edit="fontName Verdana" style="font-family:'Verdana'">Verdana</a></li>
+							</ul>
+						</div>
+						<div class="btn-group">
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" title="Font Size" data-original-title="Font Size"><i class="glyphicon glyphicon-text-height"></i>&nbsp;<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
+								<li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
+								<li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
+							</ul>
+						</div>
+						<div class="btn-group">
+							<a class="btn btn-primary" data-edit="bold" title="Bold (Ctrl/Cmd+B)" data-original-title="Bold (Ctrl/Cmd+B)"><i class="glyphicon glyphicon-bold"></i></a>
+							<a class="btn btn-primary" data-edit="italic" title="Italic (Ctrl/Cmd+I)" data-original-title="Italic (Ctrl/Cmd+I)"><i class="glyphicon glyphicon-italic"></i></a>
+							<a class="btn btn-primary" data-edit="underline" title="Underline (Ctrl/Cmd+U)" data-original-title="Underline (Ctrl/Cmd+U)"><i class="glyphicon glyphicon-text-width"></i></a>
+						</div>
+						<div class="btn-group">
+							<a class="btn btn-primary" data-edit="insertunorderedlist" title="Bullet list" data-original-title="Bullet list"><i class="glyphicon glyphicon-list"></i></a>
+							<a class="btn btn-primary" data-edit="insertorderedlist" title="Number list" data-original-title="Number list"><i class="glyphicon glyphicon-list-alt"></i></a>
+							<a class="btn btn-primary" data-edit="outdent" title="Reduce indent" data-original-title="Reduce indent (Shift+Tab)"><i class="glyphicon glyphicon-indent-left"></i></a>
+							<a class="btn btn-primary" data-edit="indent" title="Indent" data-original-title="Indent (Tab)"><i class="glyphicon glyphicon-indent-right"></i></a>
+						</div>
+						<div class="btn-group">
+							<a class="btn btn-primary" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)" data-original-title="Align Left (Ctrl/Cmd+L)"><i class="glyphicon glyphicon-align-left"></i></a>
+							<a class="btn btn-primary" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)" data-original-title="Center (Ctrl/Cmd+E)"><i class="glyphicon glyphicon-align-center"></i></a>
+							<a class="btn btn-primary" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)" data-original-title="Align Right (Ctrl/Cmd+R)"><i class="glyphicon glyphicon-align-right"></i></a>
+							<a class="btn btn-primary" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)" data-original-title="Justify (Ctrl/Cmd+J)"><i class="glyphicon glyphicon-align-justify"></i></a>
+						</div>
+						<div class="btn-group">
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" title="Hyperlink" data-original-title="Hyperlink"><i class="glyphicon glyphicon-link"></i></a>
+							<div class="dropdown-menu input-append">
+								<input class="span2" placeholder="URL" type="text" data-edit="createLink">
+								<button class="btn" type="button">Add</button>
+							</div>
+							<a class="btn btn-primary" data-edit="unlink" title="Remove Hyperlink" data-original-title="Remove Hyperlink"><i class="glyphicon glyphicon-remove"></i></a>
+						</div>
+						<div class="btn-group">
+							<a class="btn btn-primary" title="Insert picture" id="pictureBtn" data-original-title="Insert picture (or just drag &amp; drop)"><i class="glyphicon glyphicon-picture"></i></a>
+							<input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" style="opacity: 0; position: absolute; top: 0px; left: 0px; width: 37px; height: 30px;">
+						</div>
+						<div class="btn-group">
+							<a class="btn btn-primary" data-edit="undo" title="Undo (Ctrl/Cmd+Z)" data-original-title="Undo (Ctrl/Cmd+Z)"><i class="glyphicon glyphicon-backward"></i></a>
+							<a class="btn btn-primary" data-edit="redo" title="Redo (Ctrl/Cmd+Y)" data-original-title="Redo (Ctrl/Cmd+Y)"><i class="glyphicon glyphicon-forward"></i></a>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-xs-12">
+						<div class="form-control editor" id="editor" ng-keyup="OnTextInput()" contenteditable="{{ !readMode }}"></div>
+						<span ng-show="!art.content" class="text-danger">The article content is empty</span>
+					</div>
+				</div>
+				<loading msg="msg" sending="sending" is-error="isError"></loading>
+				<button type="button" ng-click="close()" class="btn btn-warning" ng-disabled="sending">Close</button>
+				<button type="button" ng-click="removeArticle(art.id)" class="btn btn-danger" ng-show="canBeRemoved()" ng-disabled="sending">Remove</button>
+				<button type="submit" ng-click="draft=1" class="btn btn-success" ng-show="canBeDrafted()" ng-disabled="sending || !art.content || editArticleForm.$error.tooManyCategories">Save As Draft</button>
+				<button type="submit" ng-click="draft=null" class="btn btn-warning" ng-show="canBeSaved()" ng-disabled="sending || !art.content || editArticleForm.$error.tooManyCategories">Save And Send</button>
+
+				<button type="button" ng-click="changeArticleState(true)" class="btn btn-success" ng-show="onReview || onAmending" ng-disabled="sending || allResolved()">Send Off To Edit</button>
+				<button type="button" ng-click="changeArticleState(false, true)" class="btn btn-success" ng-show="onReview || onAmending" ng-disabled="sending || !allResolved()">Approve</button>
+				<button type="button" ng-click="startAmending()" class="btn btn-success" ng-show="onReview" ng-disabled="sending || !allResolved() || onAmending">Start Amending</button>
+				<button type="button" ng-click="changeArticleState(true)" class="btn btn-success" ng-show="onEdit" ng-disabled="sending">Save</button>
+				<button type="button" ng-click="changeArticleState()" class="btn btn-success" ng-show="onEdit" ng-disabled="sending || !allResolved()">Send Off To Review</button>
+				
+				<button type="button" ng-click="createVersion()" class="btn btn-info pull-right" ng-disabled="sending" ng-show="art.id && canBeDrafted()">Create Version</button>
+			</form>
+		</div>
+		<div ng-show="amendingMode" class="col-sm-3">
+			<div class="panel panel-danger" id="amendmentPanel">
+				<div class="panel-heading pointer" data-toggle="collapse" data-target="#amendments">
+					<span class="panel-title">Amendments</span>
+				</div>
+				<div style="overflow:hidden;" class="panel-body fade in" id="amendments">
+					<button ng-show="onAmending" ng-disabled="sending || !selection || !selection.selectedText" title="Create" type="button" class="btn btn-default" ng-click="openAmendment()">
+						<span class="glyphicon glyphicon-plus"></span>
+					</button>
+					<button ng-show="onEdit" ng-disabled="sending || !selectedUnresolved || !selectedIndexes.length" title="Resolve" type="button" class="btn btn-default" ng-click="resolveAmendment(selectedIndexes)">
+						<span class="glyphicon glyphicon-ok"></span>
+					</button>
+					<button ng-show="onAmending" ng-disabled="sending || !selectedUnresolved || !selectedIndexes.length" title="Remove" type="button" class="btn btn-default" ng-click="removeAmendment(selectedIndexes)">
+						<span class="glyphicon glyphicon-remove"></span>
+					</button>
+					<button ng-disabled="sending || selectedIndexes.length != 1" title="Show" type="button" class="btn btn-default" ng-click="openAmendment(selectedIndexes[0])">
+						<span class="glyphicon glyphicon-eye-open"></span>
+					</button>
+					<ol style="overflow-y:auto;height:250px">
+						<li ng-repeat="a in amendments">
+							<input class="amdBox{{$index}}" ng-click="selectAmendment($index)" type="checkbox" />
+							<a title="{{a.content}}" ng-class="{'underlined': a.id == scrolledAmendmentId,'text-success': !a.archived && a.resolved, 'text-warning': a.archived }" ng-click="scrollTo(a.id)">{{getAmendmentComment(a.content)}}</a>
+						</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

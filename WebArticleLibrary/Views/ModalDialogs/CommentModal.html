@@ -1,0 +1,21 @@
+﻿<div class="modal-header">
+	<button type="button" class="close" ng-click="closeModal()">&times;</button>
+	<h4 class="modal-title">Comments<span ng-show="parentId"> related to #{{parentId}}</span></h4>
+</div>
+<div class="modal-body">
+	<form class="form-horizontal">
+		<ul>
+			<li ng-repeat="c in comments">
+				<div class="panel panel-info" ng-class="{'panel-danger':isBlocked(c.status)}">
+					<div class="panel-heading">
+						<label class="panel-title">#{{c.id}}, {{getUserName(c.authorId)}} {{c.insertDate|date:'medium'}} {{isBlocked(c.status) ? '(Blocked)': ''}}</label>
+					</div>
+					<div class="panel-body">
+						<div ng-bind-html="getCommentContent(c.content)"></div>
+					</div>
+				</div>	
+			</li>
+		</ul>
+		<button class="btn btn-warning" type="button" ng-click="closeModal()">Close</button>
+	</form>
+</div>

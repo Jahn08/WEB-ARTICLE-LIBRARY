@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html ng-app="ArticleLibraryApp">
+<head>
+    <title>Your Article Library</title>
+	<meta charset="utf-8" />
+	<link rel="icon" href="images/indexIcon.ico"/>
+</head>
+<body>
+	<script src="Scripts/jquery-2.0.3.min.js"></script>
+	<script src="Scripts/jquery.signalR-2.2.2.min.js"></script>
+	<script src="signalr/hubs"></script>
+	<script src="Scripts/bootstrap.min.js"></script>
+	<script src="Scripts/jquery.hotkeys.min.js"></script>
+	<script src="Scripts/bootstrap-wysiwyg.js"></script>
+	<script src="Scripts/select2.min.js"></script>
+	<script src="Scripts/angular.min.js"></script>
+	<script src="Scripts/angular-ui-router.min.js"></script>
+	<script src="Scripts/angular-resource.min.js"></script>
+	<script src="Scripts/angular-cookies.min.js"></script>
+	<script src="Scripts/angular-sanitize.min.js"></script>
+	<script src="Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+	<script src="Scripts/App/app.js"></script>
+	<script src="Scripts/App/services.js"></script>
+
+	<!--Controllers-->
+	<script src="Scripts/App/Controllers/ModalDialogs.js"></script>
+	<script src="Scripts/App/Controllers/ArticleEdit.js"></script>
+	<script src="Scripts/App/Controllers/ArticleInfo.js"></script>
+	<script src="Scripts/App/Controllers/ArticleSearch.js"></script>
+	<script src="Scripts/App/Controllers/ArticleView.js"></script>
+	<script src="Scripts/App/Controllers/CommentInfo.js"></script>
+	<script src="Scripts/App/Controllers/ComplaintInfo.js"></script>
+	<script src="Scripts/App/Controllers/EmailConfirmation.js"></script>
+	<script src="Scripts/App/Controllers/EstimateInfo.js"></script>
+	<script src="Scripts/App/Controllers/Header.js"></script>
+	<script src="Scripts/App/Controllers/Footer.js"></script>
+	<script src="Scripts/App/Controllers/AboutUs.js"></script>
+	<script src="Scripts/App/Controllers/Home.js"></script>
+	<script src="Scripts/App/Controllers/Properties.js"></script>
+	<script src="Scripts/App/Controllers/ResetPassword.js"></script>
+	<script src="Scripts/App/Controllers/UserConfirmation.js"></script>
+	<script src="Scripts/App/Controllers/UserInfo.js"></script>
+
+	<script src="Scripts/App/directives.js"></script>
+	<script src="Scripts/App/filters.js"></script>
+
+	<link href="Content/bootstrap.min.css" rel="stylesheet" />
+	<link href="Content/bootstrap-theme.min.css" rel="stylesheet" />
+	<link href="Content/font-awesome.min.css" rel="stylesheet" />
+	<link href="Content/css/select2.min.css" rel="stylesheet" />
+	<link href="Content/styles.css" rel="stylesheet" />
+
+	<div ui-view="modal"></div>
+	<div ui-view="header"></div>
+	<div ui-view="content" class="content"></div>
+	<footer ui-view="footer" class="navbar panel-footer"></footer>
+</body>
+</html>
