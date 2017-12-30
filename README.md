@@ -1,3 +1,6 @@
+
+![alt text](https://github.com/Jahn08/Angular-MVC-Application/blob/master/WebArticleLibrary/images/indexIcon.ico)
+
 # Angular-MVC-Application
 
 A web project based on the Angular framework with WebApi on the server side.
