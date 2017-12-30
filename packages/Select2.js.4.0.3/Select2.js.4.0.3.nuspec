@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Select2.js</id>
+    <version>4.0.3</version>
+    <title>Select2.js</title>
+    <authors>Kevin Brown, Igor Vaynberg, and Select2 contributors</authors>
+    <owners>Kevin Brown, Igor Vaynberg, and Select2 contributors</owners>
+    <licenseUrl>https://github.com/select2/select2/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://select2.github.io/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A jQuery based replacement for select boxes. It supports searching, remote data sets, and infinite scrolling of results.</description>
+    <summary>Select2 gives you a customizable select box with support for searching, tagging, remote data sets, infinite scrolling, and many other highly used options.</summary>
+    <releaseNotes>New features in 4.0.3
+
+The old dropdownAutoWidth option now properly works [fe26b08]
+A focus event on the original &lt;select&gt; is now handled [31e7a1d]
+Adding and removing options now refreshes the selection automatically [ea79a19]
+
+Bug fixes
+
+select2('option') no longer mutate the arguments when working on multiple elements [c2c1aee]
+Better detect aborted requests [cfb66f5]
+New options are now properly created during tokenization [3b8cd2e]
+Fix positioning bug with non-static parents for the dropdown [#4267]
+Infinite scrolling no longer resets the keyboard focus [e897d00, 9f58128]
+selectOnClose now works properly with closeOnSelect [481c438]
+Apply ajax.delay to empty search terms as well [4b9e02f]</releaseNotes>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="jQuery" version="1.7.0" />
+    </dependencies>
+  </metadata>
+</package>
