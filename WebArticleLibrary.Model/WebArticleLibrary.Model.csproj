@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D89198FC-F84F-4FDF-8AFA-1E71BC972289}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebArticleLibrary.Model</RootNamespace>
+    <AssemblyName>WebArticleLibrary.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AMENDMENT.cs" />
+    <Compile Include="ARTICLE.cs" />
+    <Compile Include="ARTICLE_HISTORY.cs" />
+    <Compile Include="ArticleLibraryContext.cs" />
+    <Compile Include="Migrations\201702130803224_InitializeContext.cs" />
+    <Compile Include="Migrations\201702130803224_InitializeContext.Designer.cs">
+      <DependentUpon>201702130803224_InitializeContext.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703111933520_USER_CONFIRMATION_PARAMS.cs" />
+    <Compile Include="Migrations\201703111933520_USER_CONFIRMATION_PARAMS.Designer.cs">
+      <DependentUpon>201703111933520_USER_CONFIRMATION_PARAMS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704021834170_USER_SETTING_FIELDS.cs" />
+    <Compile Include="Migrations\201704021834170_USER_SETTING_FIELDS.Designer.cs">
+      <DependentUpon>201704021834170_USER_SETTING_FIELDS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704122028535_USER_RESETTING_PASSWORD_PARAMS.cs" />
+    <Compile Include="Migrations\201704122028535_USER_RESETTING_PASSWORD_PARAMS.Designer.cs">
+      <DependentUpon>201704122028535_USER_RESETTING_PASSWORD_PARAMS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704302023523_ARTICLE_TABLE.cs" />
+    <Compile Include="Migrations\201704302023523_ARTICLE_TABLE.Designer.cs">
+      <DependentUpon>201704302023523_ARTICLE_TABLE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705211557140_ARTICLE_ASSIGNED_USER.cs" />
+    <Compile Include="Migrations\201705211557140_ARTICLE_ASSIGNED_USER.Designer.cs">
+      <DependentUpon>201705211557140_ARTICLE_ASSIGNED_USER.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706012046082_AMENDMENT_TABLE.cs" />
+    <Compile Include="Migrations\201706012046082_AMENDMENT_TABLE.Designer.cs">
+      <DependentUpon>201706012046082_AMENDMENT_TABLE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706251248352_AMENDMENT_ARCHIVED_FIELD.cs" />
+    <Compile Include="Migrations\201706251248352_AMENDMENT_ARCHIVED_FIELD.Designer.cs">
+      <DependentUpon>201706251248352_AMENDMENT_ARCHIVED_FIELD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707151108468_ARTICLE_HISTORY_TABLE_AND_FIELDS.cs" />
+    <Compile Include="Migrations\201707151108468_ARTICLE_HISTORY_TABLE_AND_FIELDS.Designer.cs">
+      <DependentUpon>201707151108468_ARTICLE_HISTORY_TABLE_AND_FIELDS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707212022347_USER_COMMENT_AND_ESTIMATE_TABLES.cs" />
+    <Compile Include="Migrations\201707212022347_USER_COMMENT_AND_ESTIMATE_TABLES.Designer.cs">
+      <DependentUpon>201707212022347_USER_COMMENT_AND_ESTIMATE_TABLES.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708142015198_USER_COMPLAINT_TABLE.cs" />
+    <Compile Include="Migrations\201708142015198_USER_COMPLAINT_TABLE.Designer.cs">
+      <DependentUpon>201708142015198_USER_COMPLAINT_TABLE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710011035346_ARTICLE_DESCRIPTION_FIELD.cs" />
+    <Compile Include="Migrations\201710011035346_ARTICLE_DESCRIPTION_FIELD.Designer.cs">
+      <DependentUpon>201710011035346_ARTICLE_DESCRIPTION_FIELD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711121448282_USER_NOTIFICATION_TABLE.cs" />
+    <Compile Include="Migrations\201711121448282_USER_NOTIFICATION_TABLE.Designer.cs">
+      <DependentUpon>201711121448282_USER_NOTIFICATION_TABLE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711231907115_ARTICLE_REVIEWED_CONTENT.cs" />
+    <Compile Include="Migrations\201711231907115_ARTICLE_REVIEWED_CONTENT.Designer.cs">
+      <DependentUpon>201711231907115_ARTICLE_REVIEWED_CONTENT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="USER.cs" />
+    <Compile Include="USER_COMPLAINT.cs" />
+    <Compile Include="USER_ESTIMATE.cs" />
+    <Compile Include="USER_COMMENT.cs" />
+    <Compile Include="USER_NOTIFICATION.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201702130803224_InitializeContext.resx">
+      <DependentUpon>201702130803224_InitializeContext.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703111933520_USER_CONFIRMATION_PARAMS.resx">
+      <DependentUpon>201703111933520_USER_CONFIRMATION_PARAMS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704021834170_USER_SETTING_FIELDS.resx">
+      <DependentUpon>201704021834170_USER_SETTING_FIELDS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704122028535_USER_RESETTING_PASSWORD_PARAMS.resx">
+      <DependentUpon>201704122028535_USER_RESETTING_PASSWORD_PARAMS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704302023523_ARTICLE_TABLE.resx">
+      <DependentUpon>201704302023523_ARTICLE_TABLE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705211557140_ARTICLE_ASSIGNED_USER.resx">
+      <DependentUpon>201705211557140_ARTICLE_ASSIGNED_USER.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706012046082_AMENDMENT_TABLE.resx">
+      <DependentUpon>201706012046082_AMENDMENT_TABLE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706251248352_AMENDMENT_ARCHIVED_FIELD.resx">
+      <DependentUpon>201706251248352_AMENDMENT_ARCHIVED_FIELD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707151108468_ARTICLE_HISTORY_TABLE_AND_FIELDS.resx">
+      <DependentUpon>201707151108468_ARTICLE_HISTORY_TABLE_AND_FIELDS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707212022347_USER_COMMENT_AND_ESTIMATE_TABLES.resx">
+      <DependentUpon>201707212022347_USER_COMMENT_AND_ESTIMATE_TABLES.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708142015198_USER_COMPLAINT_TABLE.resx">
+      <DependentUpon>201708142015198_USER_COMPLAINT_TABLE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710011035346_ARTICLE_DESCRIPTION_FIELD.resx">
+      <DependentUpon>201710011035346_ARTICLE_DESCRIPTION_FIELD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711121448282_USER_NOTIFICATION_TABLE.resx">
+      <DependentUpon>201711121448282_USER_NOTIFICATION_TABLE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711231907115_ARTICLE_REVIEWED_CONTENT.resx">
+      <DependentUpon>201711231907115_ARTICLE_REVIEWED_CONTENT.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
