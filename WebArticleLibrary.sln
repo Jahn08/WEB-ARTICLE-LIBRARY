@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 14 for Web
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebArticleLibrary", "WebArticleLibrary\WebArticleLibrary.csproj", "{80A7A498-3EA8-4499-9CA5-7E4F511C19C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebArticleLibrary.Model", "WebArticleLibrary.Model\WebArticleLibrary.Model.csproj", "{D89198FC-F84F-4FDF-8AFA-1E71BC972289}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80A7A498-3EA8-4499-9CA5-7E4F511C19C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80A7A498-3EA8-4499-9CA5-7E4F511C19C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80A7A498-3EA8-4499-9CA5-7E4F511C19C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80A7A498-3EA8-4499-9CA5-7E4F511C19C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D89198FC-F84F-4FDF-8AFA-1E71BC972289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D89198FC-F84F-4FDF-8AFA-1E71BC972289}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D89198FC-F84F-4FDF-8AFA-1E71BC972289}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D89198FC-F84F-4FDF-8AFA-1E71BC972289}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
