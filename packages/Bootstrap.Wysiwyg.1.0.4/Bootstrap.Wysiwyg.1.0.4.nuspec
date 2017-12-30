@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Bootstrap.Wysiwyg</id>
+    <version>1.0.4</version>
+    <title>Bootstrap.Wysiwyg</title>
+    <authors>Viacheslav Manulik</authors>
+    <owners>Viacheslav Manulik</owners>
+    <projectUrl>https://github.com/drc-devs/bootstrap-wysiwyg</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This tiny (10KB, &lt; 350 lines) jQuery Bootstrap plugin turns any DIV into a WYSIWYG rich-content editor.</description>
+    <summary>Bootstrap.Wysiwyg is a tiny wysiwyg rich text editor for Bootstrap</summary>
+    <dependencies>
+      <dependency id="jQuery" version="2.0.3" />
+      <dependency id="Twitter.Bootstrap" version="3.0.1.1" />
+    </dependencies>
+  </metadata>
+</package>
