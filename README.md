@@ -3,19 +3,21 @@
 A web project based on the Angular framework with WebApi on the server side.
 It implements simple logic for creating, storing and maintaining articles. Some features:
 
-* Authentication (through session and cookies)
+* Authentication (through the session storage and cookies)
 * A simple role model
-* Administration module
+* An administration module
 * User settings
-* A possibility for rating articles, leaving comments and making complaints
+* Rating articles, leaving comments and making complaints
 * A notification system (SignalR)
-* SQL as a default DB model provider (Entity Framework)
+* SQL as a default DB model provider (Entity Framework) ([read more](#headDatabase))
 
 ### Role model
 
-Administrators can review articles if they have taken them over as assignment along with approving the latter and thus making the available for other users reading.
+Administrators can review articles if they have taken them over as assignment along with approving the latter and thus making them available for other users reading.
+
 They are also responsible for dealing with complaints (either about comments or a whole article).
-Administrators can block other users or make the administrators (and return them back to being regular ones).
+
+Administrators can block other users or make them administrators (as well as return them back to being regular ones).
 
 ## Installing / Getting started
 
@@ -23,7 +25,7 @@ The application is dependant on .NET Framework ([read more](#headPrerequisites))
 
 All files from the folder WebArticleLibrary should be copied to a catalogue which will be the main one for a web application created through IIS 7+ ([how to do](https://technet.microsoft.com/en-us/library/cc772042(v=ws.10).aspx)).
 
-Installing SQL Server ([read more](#headPrerequisites)) is the next requirement along with altering web.config (lying in the root of the application folder) to write down new parameters for the connection string.
+Installing SQL Server ([read more](#headSettingUpDev)) is the next requirement along with altering web.config (lying in the root of the application folder) to write down new parameters for the connection string ([how to configure](#headConfiguration)).
 
 The first user registered in the application will be granted administrative rights.
 
@@ -46,13 +48,19 @@ The first user registered in the application will be granted administrative righ
 * [.NET Framework 4.5.2](https://www.microsoft.com/en-ca/download/details.aspx?id=42642)
 * The project was developed in MS Visual Studio 2015 ([the product page](https://www.visualstudio.com/ru/downloads/?rr=https%3A%2F%2Fwww.microsoft.com%2Fru-ru%2FSoftMicrosoft%2Fvs2015ExpressforW10.aspx))
 
-### Setting up Dev
+### <a name="headSettingUpDev"></a>Setting up Dev
+
+Setting up IIS services is a neccesity to start developing. In Windows Components there must be the ASP.NET option turned on and other standard options for IIS services. The IIS management console also ought to be included as it gives an opportunity to configure IIS sites by means of graphic interface.
+
+The developer computer has to have an access to MS SQL Server installed to deploy the database ([read more](#headDatabase)).   
 
 ## <a name="headConfiguration"></a>Configuration
 
 web.config lying in the root catalogue of the main project serves as the general file for configuration. In the file section *appSettings* the next parameters can be set: 
 * *smtpHost, smtpPort, smtpUserName, smtpPassword* for configuring a mail address which will be used to send messages to the users when registering, resetting password, changing emails or their statuses being altered
 * *aboutUs, fax, phone, mail, youtubeLink, facebookLink* for storing additional contact information shown in the bottom section of the site
+
+There is also one more imperative parameter in the same file, but in the section *connectionStrings*, where the connection string to the database should be added (or changed). There are already some default preferences (for instance, integrated security is turned on and therefore it implies the Windows integrated security to log in to SQL Server without writing down any passwords; [read more about connection strings](https://msdn.microsoft.com/en-us/library/jj653752%28v=vs.110%29.aspx)).
 
 ## Api Reference
 
@@ -68,10 +76,10 @@ The api module is available through the base url address by adding the api postf
 * **GET Article/ViewArticle** accepts two parameters: *id, userId?*. *userId* indicates that the outcome should contain additional information such as related comments, photos, current article rating. The result is *{ article: { id, authorId, assignedToId, name, description, tags, insertDate, status, content }, updatedDate, comments: [{ id, authorId, responseToId, articleId, content, insertDate, status }], userNames: [], userPhotos: [], estimate, curEstimate }*, where *userNames* and *userPhotos* are dictionaries with user identificators as keys along with the respective objects as values
 * **GET Article/SearchArticles** searches articles by means of the next parameters: *author?, tags?* (a part of the string containing categories), *text?* (it's either a part of the description or name field), *dateStart?, dateEnd?* (a date range of when articles were created), *page = 1* (a result page number; the number of items per page is the constant of 10), *colIndex = 7* (an index for a sorting column; possible values: NAME = 0, AUTHOR = 1,	TAGS = 2,	ASSIGNED_TO = 3, STATUS = 4, TEXT = 5, ID = 6, DATE = 7), *asc=false* (a direction of sorting results: ascending or otherwise descending). It returns the object *{ articles: [{ id, name, tags, insertDate, status, description, authorId }], articleCount, pageLength, userNames: [], estimates: [] }*, whereas *userNames* and *estimates* are dictionaries with user identificators as keys along with the respective objects as values
 * **POST UserInfo/ReplacePassword** accepts an object *{ newPassword, confirmationId }*
-* **GET UserInfo/ResetPassword** requires a parameter *email* where a message for resetting password will be sent if the respective user exists in the data base
+* **GET UserInfo/ResetPassword** requires a parameter *email* where a message for resetting password will be sent if the respective user exists in the database
 * **GET UserInfo/ConfirmEmail** requires a parameter *confirmationId*
 
-## Database
+## <a name="headDatabase"></a>Database
 
 The project database is based upon [SQL Server 2012](https://www.microsoft.com/en-US/download/details.aspx?id=29062); later versions of the product are also possible to make use of.
 
