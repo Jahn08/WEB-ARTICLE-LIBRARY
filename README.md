@@ -21,9 +21,9 @@ Administrators can block other users or make them administrators (as well as ret
 
 ## Installing / Getting started
 
-The application is dependant on .NET Framework ([read more](#headPrerequisites)).
+The application is dependent on .NET Framework ([read more](#headPrerequisites)).
 
-All files from the folder WebArticleLibrary should be copied to a catalogue which will be the main one for a web application created through IIS 7+ ([how to do](https://technet.microsoft.com/en-us/library/cc772042(v=ws.10).aspx)).
+All files from the folder WebArticleLibrary should be put into a catalogue which will be the main one for a web application created through IIS 7+ ([how to do](https://technet.microsoft.com/en-us/library/cc772042(v=ws.10).aspx)).
 
 Installing SQL Server ([read more](#headSettingUpDev)) is the next requirement along with altering web.config (lying in the root of the application folder) to write down new parameters for the connection string ([how to configure](#headConfiguration)).
 
@@ -50,25 +50,25 @@ The first user registered in the application will be granted administrative righ
 
 ### <a name="headSettingUpDev"></a>Setting up Dev
 
-Setting up IIS services is a neccesity to start developing. In Windows Components there must be the ASP.NET option turned on and other standard options for IIS services. The IIS management console also ought to be included as it gives an opportunity to configure IIS sites by means of graphic interface.
+Setting up IIS services is a necessity to start developing. In Windows Components there must be the ASP.NET option turned on and other standard options for IIS services. The IIS management console also ought to be included as it gives an opportunity to configure IIS sites by means of graphic interface.
 
 The developer computer has to have an access to MS SQL Server installed to deploy the database ([read more](#headDatabase)).   
 
 ## <a name="headConfiguration"></a>Configuration
 
 web.config lying in the root catalogue of the main project serves as the general file for configuration. In the file section *appSettings* the next parameters can be set: 
-* *smtpHost, smtpPort, smtpUserName, smtpPassword* for configuring a mail address which will be used to send messages to the users when registering, resetting password, changing emails or their statuses being altered
+* *smtpHost, smtpPort, smtpUserName, smtpPassword* for configuring a mail address which will be used to send messages to the users when registering, resetting password, changing email addresses or their statuses being altered
 * *aboutUs, fax, phone, mail, youtubeLink, facebookLink* for storing additional contact information shown in the bottom section of the site
 
 There is also one more imperative parameter in the same file, but in the section *connectionStrings*, where the connection string to the database should be added (or changed). There are already some default preferences (for instance, integrated security is turned on and therefore it implies the Windows integrated security to log in to SQL Server without writing down any passwords; [read more about connection strings](https://msdn.microsoft.com/en-us/library/jj653752%28v=vs.110%29.aspx)).
 
 ## Api Reference
 
-The api module is available through the base url address by adding the api postfix and a respective controller along with method and its parameters. For instance, http://localhost/WebArticleLibrary/api/Article/GetArticleTitles. The external api methods (unneccesary parameters are marked with *?*):
-* **POST Authentication/LogIn** with the object *{ name, password }*, returns the logged in user's data *{ status, id, name, firstName, lastName, patronymicName, email, photo, showPrivateInfo, insertDate }*
+The api module is available through the base url address by adding the api postfix and a respective controller along with a method and its parameters. For instance, http://localhost/WebArticleLibrary/api/Article/GetArticleTitles. The external api methods (unnecessary parameters are marked with *?*):
+* **POST Authentication/LogIn** with an object *{ name, password }*, returns a logged in user's data *{ status, id, name, firstName, lastName, patronymicName, email, photo, showPrivateInfo, insertDate }*
 * **POST Authentication/Register** with the object *{ name, password, firstName, lastName, patronymicName?, email }*
 * **GET Authentication/LogOut**
-* **GET Authentication/Confirm** with the parameter *confirmationId*, which is a GUID number formed and sent in a link to a new user's email when registering in the application
+* **GET Authentication/Confirm** with a parameter *confirmationId*, which is a GUID number formed and sent in a link to a new user's email when registering in the application
 * **GET Info/GetBasicInfo** returns the company's contact data *{ fax, phone, mail,	youtubeLink, facebookLink }* ([how to configure](#headConfiguration))
 * **GET Info/GetAboutUsInfo** returns a short description from the AboutUs page *{ aboutUs }*
 * **GET Article/GetDefaultCategories** returns an array of the names of default article categories existing as constant strings in the system
@@ -76,7 +76,7 @@ The api module is available through the base url address by adding the api postf
 * **GET Article/ViewArticle** accepts two parameters: *id, userId?*. *userId* indicates that the outcome should contain additional information such as related comments, photos, current article rating. The result is *{ article: { id, authorId, assignedToId, name, description, tags, insertDate, status, content }, updatedDate, comments: [{ id, authorId, responseToId, articleId, content, insertDate, status }], userNames: [], userPhotos: [], estimate, curEstimate }*, where *userNames* and *userPhotos* are dictionaries with user identificators as keys along with the respective objects as values
 * **GET Article/SearchArticles** searches articles by means of the next parameters: *author?, tags?* (a part of the string containing categories), *text?* (it's either a part of the description or name field), *dateStart?, dateEnd?* (a date range of when articles were created), *page = 1* (a result page number; the number of items per page is the constant of 10), *colIndex = 7* (an index for a sorting column; possible values: NAME = 0, AUTHOR = 1,	TAGS = 2,	ASSIGNED_TO = 3, STATUS = 4, TEXT = 5, ID = 6, DATE = 7), *asc=false* (a direction of sorting results: ascending or otherwise descending). It returns the object *{ articles: [{ id, name, tags, insertDate, status, description, authorId }], articleCount, pageLength, userNames: [], estimates: [] }*, whereas *userNames* and *estimates* are dictionaries with user identificators as keys along with the respective objects as values
 * **POST UserInfo/ReplacePassword** accepts an object *{ newPassword, confirmationId }*
-* **GET UserInfo/ResetPassword** requires a parameter *email* where a message for resetting password will be sent if the respective user exists in the database
+* **GET UserInfo/ResetPassword** requires a parameter *email* as an email address where a message for resetting password will be sent if the respective user exists in the database
 * **GET UserInfo/ConfirmEmail** requires a parameter *confirmationId*
 
 ## <a name="headDatabase"></a>Database
@@ -90,7 +90,7 @@ There are 8 tables altogether:
 * ARTICLE keeps all information related to articles
 * USER_COMMENT, USER_COMPLAINT, USER_ESTIMATE are connected to both of the tables preceded and contain respective information (comments for articles, complaints related to either an article or a comment, ratings for articles)
 * AMENDMENT is needed to store amendments corresponding to an article being reviewed
-* ARTICLE_HISTORY contains all events related to a particular article
-* USER_NOTIFICATION makes up of data related to events from ARTICLE_HISTORY and connected to a particular user (for instance, a notifications for administrators about a new article being waited for a review)
+* ARTICLE_HISTORY contains descriptions of all events related to a particular article
+* USER_NOTIFICATION is made up of data related to events from ARTICLE_HISTORY and connected to a particular user (for instance, notifications for administrators about a new article being waited for a review)
 
 ![alt text](https://github.com/Jahn08/Angular-MVC-Application/blob/master/DB_Diagram.jpg "A database diagram")
