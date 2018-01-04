@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+	<Product Id="*" Name="WebArticleLibrary" Language="1033" Version="1.0.0.0" Manufacturer="WebArticleLibrary" UpgradeCode="5a22ba31-da04-42e3-9fff-4e056286f77b">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="WebArticleLibrary" Level="1" ConfigurableDirectory="INSTALLLOCATION">
+			<Feature Id="MainContent" Title="Main preferences">
+				<ComponentGroupRef Id="IisConfiguration" />
+				<ComponentGroupRef Id="WebComponents" />
+				<ComponentRef Id="WebConfigComponent" />
+				<ComponentRef Id="WebConfigComponentSecurity" />
+				<ComponentRef Id="WebConfigComponentRemoval" />
+				<ComponentRef Id="RegistryAppPoolCreation" />
+			</Feature>
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLLOCATION" Name="WebArticleLibrary" >
+				</Directory>
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<DirectoryRef Id="INSTALLLOCATION">
+			<!-- Setting up the connection string for the Integrated security mode -->
+			<Component Id="WebConfigComponent" Guid="*" Permanent="no">
+				<Condition>NOT(DB_USE_INTEGRATED_SECURITY="1")</Condition>
+				<File Id="WebConfig" KeyPath="yes" Source="$(var.publishDir)\Web.config" Vital="yes" />
+				<util:XmlFile Id="ModifyConnectionString" Action="setValue"
+					Permanent="yes" ElementPath="/configuration/connectionStrings/add[\[]@name='WebArticleLib_DBConnection'[\]]"
+					Name="connectionString" File="[#WebConfig]"
+					Value="Data Source=[DB_SERVER_NAME];Initial Catalog=[DB_NAME];User Id=[DB_USER_NAME];Password=[DB_USER_PASSWORD];Persist Security Info=True;MultipleActiveResultSets=True;App=EntityFramework"
+					SelectionLanguage="XSLPattern" Sequence="1"/>
+			</Component>
+			<!-- Setting up the connection string for a particular user -->
+			<Component Id="WebConfigComponentSecurity" Guid="*" Permanent="no">
+				<Condition>DB_USE_INTEGRATED_SECURITY="1"</Condition>
+				<File Id="WebConfigSecurity" KeyPath="yes" Source="$(var.publishDir)\Web.config" Vital="yes" />
+				<util:XmlFile Id="ModifyConnectionStringSecurity" Action="setValue"
+					Permanent="yes" ElementPath="/configuration/connectionStrings/add[\[]@name='WebArticleLib_DBConnection'[\]]"
+					Name="connectionString" File="[#WebConfigSecurity]"
+					Value="Data Source=[DB_SERVER_NAME];Initial Catalog=[DB_NAME];Integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
+					SelectionLanguage="XSLPattern" Sequence="1"/>
+			</Component>
+			<Component Id="WebConfigComponentRemoval" Guid="5ad1b5d8-3914-46b3-b377-b0934686e134">
+				<RemoveFile Name="*.*" Id="WebConfigComponentRemovingFile" On="uninstall" />
+				<RemoveFolder Directory="INSTALLLOCATION" Id="WebConfigComponentRemovingFolder" On="uninstall" />
+			</Component>
+			<Component Id="RegistryAppPoolCreation">
+				<RegistryKey Key="SOFTWARE\WebArticleLibrary" Root="HKLM" ForceDeleteOnUninstall="yes">
+					<RegistryValue Name="AppPoolName" Type="string" Value="[WEB_APP_NAME]" />
+					<RegistryValue Name="SiteName" Type="string" Value="[VIRTUAL_DIR_VAL]" />
+				</RegistryKey>
+			</Component>
+		</DirectoryRef>
+		<Property Id="FRAMEWORKBASEPATH" Secure="yes">
+			<RegistrySearch Id="FindFrameworkDir" Root="HKLM"
+							Key="SOFTWARE\Microsoft\.NETFramework"
+							Name="InstallRoot" Type="raw" />
+		</Property>
+		<Property Id="ASPNETREGIIS" Secure="yes">
+			<DirectorySearch Path="[FRAMEWORKBASEPATH]" Depth="4" Id="FindAspNetRegIis">
+                <FileSearch Name="aspnet_regiis.exe" MinVersion="2.0.5"/>
+            </DirectorySearch>
+		</Property>		
+			
+		<CustomAction Id="MakeWebApp2" Directory="INSTALLLOCATION" 
+					  ExeCommand="[ASPNETREGIIS] -norestart -s W3SVC/1/ROOT/[WEB_APP_NAME]" />
+		<InstallExecuteSequence>
+			<Custom Action="MakeWebApp2" After="InstallFinalize">ASPNETREGIIS AND NOT Installed</Custom>
+		</InstallExecuteSequence>
+		<WixVariable Id="WixUILicenseRtf" Value="..\License.rtf" />
+		<UIRef Id="MyWebUI"/>
+	</Fragment>
+</Wix>

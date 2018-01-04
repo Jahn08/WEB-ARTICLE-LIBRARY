@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<UI>
+			<Dialog Id="IisSetupDlg" Width="370" Height="270"
+                     Title="IIS Settings - [ProductName]" NoMinimize="yes">
+				<!-- Virtual Dir prompt -->
+				<Control Id="VirtualDirLabel" Type="Text" X="45" Y="73"
+                   Width="100" Height="15" TabSkip="no" Text="&amp;Virtual Directory:" />
+				<Control Id="VirtualDirEdit" Type="Edit" X="45"
+                   Y="85" Width="220" Height="18" Property="VIRTUAL_DIR_VAL" Text="{80}" />
+				<!-- name of the application pool -->
+				<Control Id="PoolNameLabel" Type="Text" X="45" Y="105"
+                    Width="100" Height="15" TabSkip="no" Text="&amp;Pool name:" />
+				<Control Id="PoolNameEdit" Type="Edit" X="45" Y="117"
+                    Width="220" Height="18" Property="WEB_APP_NAME" Text="{80}" />
+				<!-- Back button -->
+				<Control Id="Back" Type="PushButton" X="180" Y="243"
+                        Width="56" Height="17" Text="&amp;Back">
+					<Publish Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+				</Control>
+				<Control Id="Next" Type="PushButton" X="236" Y="243"
+                   Width="56" Height="17" Default="yes" Text="&amp;Next">
+					<!--if settings are correct, allow next dialog-->
+					<Condition Action="disable">VIRTUAL_DIR_VAL="" OR WEB_APP_NAME=""</Condition>
+					<Condition Action="enable">NOT(VIRTUAL_DIR_VAL="") AND NOT(WEB_APP_NAME="")</Condition>
+					<Publish Event="NewDialog" Value="DBSettingsDlg">1</Publish>
+				</Control>
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243"
+                           Width="56" Height="17" Cancel="yes" Text="Cancel">
+					<Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+				</Control>
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0"
+                     Width="370" Height="44" TabSkip="no" Text="WixUI_Bmp_Banner" />
+				<Control Id="Description" Type="Text" X="25" Y="23"
+                       Width="280" Height="15" Transparent="yes" NoPrefix="yes">
+					<Text>Please enter IIS Configuration</Text>
+				</Control>
+				<Control Id="BottomLine" Type="Line" X="0" Y="234"
+                      Width="370" Height="0" />
+				<Control Id="Title" Type="Text" X="15" Y="6"
+                        Width="200" Height="15" Transparent="yes" NoPrefix="yes">
+					<Text>{\WixUI_Font_Title}IIS Settings</Text>
+				</Control>
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+			</Dialog>
+
+			<Dialog Id="DBSettingsDlg" Width="370" Height="270"
+                     Title="Database Settings - [ProductName]" NoMinimize="yes">
+				<!-- Server -->
+				<Control Id="DBServerLabel" Type="Text" X="45" Y="73"
+                   Width="100" Height="15" TabSkip="no" Text="&amp;SQL Server:" />
+				<Control Id="DBServerEdit" Type="Edit" X="45"
+                   Y="85" Width="220" Height="18" Property="DB_SERVER_NAME" Text="{80}" />
+				<!-- DB Name -->
+				<Control Id="DBNameLabel" Type="Text" X="45" Y="105"
+                    Width="100" Height="15" TabSkip="no" Text="&amp;Database Name:" />
+				<Control Id="DBNameEdit" Type="Edit" X="45" Y="117"
+                    Width="220" Height="18"
+                    Property="DB_NAME" Text="{80}" />
+				<!-- Login -->
+				<Control Id="DBUserLabel" Type="Text" X="45" Y="137" Hidden="yes"
+                  Width="100" Height="15" TabSkip="no" Text="&amp;Database User Name:">
+					<Condition Action="hide">DB_USE_INTEGRATED_SECURITY="1"</Condition>
+					<Condition Action="show">NOT(DB_USE_INTEGRATED_SECURITY="1")</Condition>
+				</Control>
+				<Control Id="DBUserEdit" Type="Edit" X="45" Y="149" Hidden="yes"
+                  Width="220" Height="18" Property="DB_USER_NAME" Text="{80}">
+					<Condition Action="hide">DB_USE_INTEGRATED_SECURITY="1"</Condition>
+					<Condition Action="show">NOT(DB_USE_INTEGRATED_SECURITY="1")</Condition>
+				</Control>
+				<!-- Password -->
+				<Control Id="DBPasswordLabel" Type="Text" X="45" Y="169" Hidden="yes"
+                  Width="100" Height="15" TabSkip="no" Text="&amp;Database User Password:">
+					<Condition Action="hide">DB_USE_INTEGRATED_SECURITY="1"</Condition>
+					<Condition Action="show">NOT(DB_USE_INTEGRATED_SECURITY="1")</Condition>
+				</Control>
+				<Control Id="DBPasswordEdit" Type="Edit" X="45" Y="181" Hidden="yes"
+                  Width="220" Height="18" Property="DB_USER_PASSWORD"
+                  Text="{80}" Password="yes">
+					<Condition Action="hide">DB_USE_INTEGRATED_SECURITY="1"</Condition>
+					<Condition Action="show">NOT(DB_USE_INTEGRATED_SECURITY="1")</Condition>
+				</Control>
+				<!-- Integrated Security -->
+				<Control Id="DBSecurityEdit" Type="CheckBox" Text="Integrated Security" X="45" Y="201" CheckBoxValue="1"
+						 Width="220" Height="10" 
+						 ToolTip="Use the current Windows account credentials"
+						 Property="DB_USE_INTEGRATED_SECURITY" />
+				<!-- Back button -->
+				<Control Id="Back" Type="PushButton" X="180" Y="243"
+                  Width="56" Height="17" Text="&amp;Back">
+					<Publish Event="NewDialog" Value="IisSetupDlg">1</Publish>
+				</Control>
+				<Control Id="Next" Type="PushButton" X="236" Y="243"
+                  Width="56" Height="17" Default="yes" Text="&amp;Next">
+					<!--if settings are correct, allow next dialog-->
+					<Condition Action="disable">DB_SERVER_NAME="" OR DB_NAME="" OR (NOT(DB_USE_INTEGRATED_SECURITY="1") AND (DB_USER_NAME="" OR DB_USER_PASSWORD=""))</Condition>
+					<Condition Action="enable">NOT(DB_SERVER_NAME="") AND NOT(DB_NAME="") AND (DB_USE_INTEGRATED_SECURITY="1" OR (NOT(DB_USER_NAME="") AND NOT(DB_USER_PASSWORD="")))</Condition>
+					<Publish Event="NewDialog" Value="CustomizeDlg">1</Publish>
+				</Control>
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243"
+                        Width="56" Height="17" Cancel="yes" Text="Cancel">
+					<Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+				</Control>
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0"
+                  Width="370" Height="44" TabSkip="no" Text="WixUI_Bmp_Banner" />
+				<Control Id="Description" Type="Text" X="25" Y="23"
+                       Width="280" Height="15" Transparent="yes" NoPrefix="yes">
+					<Text>Please enter database configuration</Text>
+				</Control>
+				<Control Id="BottomLine" Type="Line" X="0"
+                         Y="234" Width="370" Height="0" />
+				<Control Id="Title" Type="Text" X="15" Y="6"
+                         Width="200" Height="15" Transparent="yes" NoPrefix="yes">
+					<Text>{\WixUI_Font_Title}Database Settings</Text>
+				</Control>
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+			</Dialog>
+
+		</UI>
+	</Fragment>
+</Wix>

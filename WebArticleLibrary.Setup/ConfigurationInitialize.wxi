@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Include>
+	<!-- Getting values for properties either from the registry or by default -->
+	<Property Id="VIRTUAL_DIR_VAL" Value="WebArticleLibrary" Secure="yes">
+		<RegistrySearch Id="FindSiteName" Root="HKLM"
+						Key="SOFTWARE\WebArticleLibrary"
+						Name="SiteName" Type="raw"/>
+	</Property>
+	<Property Id="WEB_APP_NAME" Value="WebArticleLibrary" Secure="yes" >
+		<RegistrySearch Id="FindAppPoolName" Root="HKLM"
+						Key="SOFTWARE\WebArticleLibrary"
+						Name="AppPoolName" Type="raw"/>
+	</Property>
+	<Property Id="DB_USE_INTEGRATED_SECURITY" Value="1" />
+</Include>

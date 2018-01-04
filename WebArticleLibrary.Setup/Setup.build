@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <WebSiteSource>..\WebArticleLibrary\</WebSiteSource>
+        <ReleaseWebConfig>Web.config</ReleaseWebConfig>
+        <PublishF>publish\</PublishF>
+        <SetupF>..\Setup\</SetupF>
+        <Publish>$(SetupF)$(PublishF)</Publish>
+        <MsiOut>bin\Release\WebArticleLibrary.Setup.msi</MsiOut>
+        <WebSiteContentCode>WebSiteContent.wxs</WebSiteContentCode>
+        <WebSiteContentObject>WebSiteContent.wixobj</WebSiteContentObject>
+        <WixPath>$(WiX)bin\</WixPath>
+    </PropertyGroup>
+	
+    <!-- Defining group of temporary files which is the content of the web site. -->
+    <ItemGroup>
+        <WebSiteContent Include="$(WebSiteContentCode)" />
+        <WebSiteContent Include="$(WebSiteContentFile)" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <!-- The group of web configs -->
+        <WebConfigs Include="$(Publish)Web.config" />
+    </ItemGroup>
+
+    <!-- The list of WIX input files -->
+    <ItemGroup>
+        <WixCode Include="IISConfiguration.wxs" />
+        <WixCode Include="Product.wxs" />
+        <WixCode Include="$(WebSiteContentCode)" />
+        <WixCode Include="UiDialogs.wxs" />
+        <WixCode Include="MyWebUI.wxs" />
+    </ItemGroup>
+    
+    <!-- The list of WIX after candle files -->
+    <ItemGroup>
+        <WixObject Include="IISConfiguration.wixobj" />
+        <WixObject Include="Product.wixobj" />
+        <WixObject Include="$(WebSiteContentObject)" />
+        <WixObject Include="UiDialogs.wixobj" />
+        <WixObject Include="MyWebUI.wixobj" />
+    </ItemGroup>
+    
+    <!-- Define default target with name 'Build' -->
+    <Target Name="Build">
+        <!-- Compile whole solution in release mode -->
+        <MSBuild Projects="..\WebArticleLibrary.sln" Targets="ReBuild" Properties="Configuration=Release" />
+    </Target>
+
+    <!-- Define creating installer in another target -->
+    <Target Name="CreateInstaller">
+        <!-- Remove complete publish folder in order to 
+             be sure that evrything will be newly compiled -->
+        <RemoveDir Directories="$(Publish)" ContinueOnError="false" />
+        <MSBuild Projects="..\WebArticleLibrary\WebArticleLibrary.csproj" Targets="ResolveReferences;_CopyWebApplication" 
+				 Properties="OutDir=$(Publish)bin\;WebProjectOutputDir=$(Publish);Configuration=Release" />
+        
+        <!-- Delete debug and setup web.configs to prevent 'heat' from harveting it -->
+        <!-- Delete all wix object which remain from previous build -->
+        <!-- Delete all other temporary files -->
+        <Delete Files="@(WebConfigs)" />
+        <Delete Files="@(WixObject)" />
+        <Delete Files="@(WebSiteContent)" />
+
+        <!-- Harvest all content of published result -->
+        <Exec Command='"$(WixPath)heat" dir $(Publish) -dr INSTALLLOCATION -ke -srd -cg WebComponents -var var.publishDir -gg -out $(WebSiteContentCode)'
+            ContinueOnError="false" WorkingDirectory="." />
+
+        <!-- After the files are beeing harvested, copy the setup web.config 
+             as regular web.config back to publish location -->
+        <Copy SourceFiles="$(WebSiteSource)$(ReleaseWebConfig)"
+			 DestinationFiles="$(Publish)Web.config"
+			 ContinueOnError="false" />
+
+        <!-- At last create an installer -->
+        <Exec Command='"$(WixPath)candle" -ext WixIISExtension -ext WixUtilExtension -ext WiXNetFxExtension -dpublishDir=$(Publish) -dMyWebResourceDir=. @(WixCode, &apos; &apos;)'
+			 ContinueOnError="false"
+			 WorkingDirectory="." />
+        <Exec Command='"$(WixPath)light" -ext WixUIExtension -ext WixIISExtension -ext WixUtilExtension -ext WiXNetFxExtension -out $(MsiOut) @(WixObject, &apos; &apos;) -sice:ICE60'
+			 ContinueOnError="false"
+			 WorkingDirectory="." />        
+        <!-- A message at the end -->
+        <Message Text="Install package has been created." />
+    </Target>
+    
+    <!-- Optional target for deleting temporary files. Usually after build -->
+    <Target Name="DeleteTmpFiles">
+        <RemoveDir Directories="$(SetupF)" ContinueOnError="false" />
+        <Delete Files="@(WebConfigs);@(WixObject);@(WebSiteContent)" />
+    </Target>
+</Project>
