@@ -24,11 +24,9 @@ Administrators can block other users or make them administrators (as well as ret
 
 ## Installing / Getting started
 
-The application is dependent on .NET Framework ([read more](#headPrerequisites)).
+The application is dependent on .NET Framework ([read more](#headPrerequisites)) along with SQL Server ([read more](#headSettingUpDev)).
 
-All files from the folder WebArticleLibrary should be put into a catalogue which will be the main one for a web application created through IIS 7+ ([how to do](https://technet.microsoft.com/en-us/library/cc772042(v=ws.10).aspx)).
-
-Installing SQL Server ([read more](#headSettingUpDev)) is the next requirement along with altering web.config (lying in the root of the application folder) to write down new parameters for the connection string ([how to configure](#headConfiguration)).
+There is an MSI-installer for the application lying in the folder WebArticleLibrary.Setup/bin/Release. Firstly, the installer lets opt for the names of the application site and its pool on IIS7. Further, components for the connection string should be set up, namely: an SQL Server name, a database name and preferences for logging in the database (user/password or the integrated security mode) ([how to configure the connection string manually](#headConfiguration)). The installer virtually repeats [this process](https://technet.microsoft.com/en-us/library/cc772042(v=ws.10).aspx).
 
 The first user registered in the application will be granted administrative rights.
 
@@ -56,6 +54,16 @@ The first user registered in the application will be granted administrative righ
 Setting up IIS services is a necessity to start developing. In Windows Components there must be the ASP.NET option turned on and other standard options for IIS services. The IIS management console also ought to be included as it gives an opportunity to configure IIS sites by means of graphic interface.
 
 The developer computer has to have an access to MS SQL Server installed to deploy the database ([read more](#headDatabase)).   
+
+### Deploying / Publishing
+
+To build a new version of the installer project, one should take advantage of the next command in the project folder:
+*msbuild /t:Build;CreateInstaller;DeleteTmpFiles Setup.build*. Note, that if there are new targets added in the Setup.build file and necessary to be included in the process, they have to be listed in the expression too.
+
+After building another version of the installer, the respective MSI-file should come up in the folder WebArticleLibrary.Setup/bin/Release alongside a renewed file cab1.cab. Both of them ought to be stored together as they take part in the process of installing.
+
+Should there any mistakes arise during the processes of installing or uninstalling, the next command might help out with logging such activities:
+*msiexec /i "WebArticleLibrary.Setup.msi" /l*v "log.log"*
 
 ## <a name="headConfiguration"></a>Configuration
 
