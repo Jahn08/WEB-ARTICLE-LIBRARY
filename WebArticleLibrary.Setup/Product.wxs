@@ -76,7 +76,7 @@
 		<InstallExecuteSequence>
 			<Custom Action="MakeWebApp2" After="InstallFinalize">ASPNETREGIIS AND NOT Installed</Custom>
 		</InstallExecuteSequence>
-		<WixVariable Id="WixUILicenseRtf" Value="..\License.rtf" />
+		<WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
 		<UIRef Id="MyWebUI"/>
 	</Fragment>
 </Wix>
