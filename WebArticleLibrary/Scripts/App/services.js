@@ -39,8 +39,8 @@
 					return deferred.promise;
 				};
 
-				this.logIn = function (data) {
-					if (!$window.localStorage.getItem(authUserItem.authUser))
+				this.logIn = function (data, force) {
+					if (!$window.localStorage.getItem(authUserItem.authUser) || force)
 						$window.localStorage.setItem(authUserItem.authUser, JSON.stringify(data));
 				};
 

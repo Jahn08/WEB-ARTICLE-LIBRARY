@@ -73,9 +73,7 @@
 				$scope.sending = true;
 
 				UserReqFactory.saveUserInfo($scope.ui).then(function () {
-					if ($scope.ui.UserName != $scope.ui.name)
-						AuthService.logIn($scope.ui);
-
+					AuthService.logIn($scope.ui, true);
 					$state.transitionTo($state.current, { confirmEmail: oldEmail != $scope.ui.email }, {
 						reload: true, inherit: false, notify: true
 					});
