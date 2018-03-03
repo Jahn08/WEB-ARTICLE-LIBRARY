@@ -58,7 +58,7 @@ The developer computer has to have an access to MS SQL Server installed to deplo
 ### Deploying / Publishing
 
 To build a new version of the installer project, one should take advantage of the next command in the project folder:
-*msbuild /t:Build;CreateInstaller;DeleteTmpFiles Setup.build*. Note, that if there are new targets added in the Setup.build file and necessary to be included in the process, they have to be listed in the expression too.
+*msbuild /t:Build;CreateInstaller;DeleteTmpFiles Setup.build*. Providing that the default configuration for building is "Release|Any CPU", the command prompt used for the process shouldn't be of the x64 version. Otherwise, there will be a necessity to add the respective platform configuration to the solution. Note, that if there are new targets added in the Setup.build file and necessary to be included in the process, they have to be listed in the expression too.
 
 After building another version of the installer, the respective MSI-file should come up in the folder WebArticleLibrary.Setup/bin/Release alongside a renewed file cab1.cab. Both of them ought to be stored together as they take part in the process of installing.
 
