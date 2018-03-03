@@ -139,8 +139,8 @@
 					}
 
 					if ($scope.art.tempTags) {
-						$scope.art.tempTags.forEach(function (val) {
-							if (!$scope.allCategories.includes(val))
+                        $scope.art.tempTags.forEach(function (val) {
+                            if ($scope.allCategories.indexOf(val) == -1)
 								$scope.allCategories.push(val);
 						})
 					}
@@ -429,8 +429,9 @@
 				}
 			};
 
-			$scope.close = function () {
-				$state.go('app.articleinfo');
+            $scope.close = function () {
+                if (confirm('You are about to close the page without saving any progress you might have done. Continue?'))
+                    $state.go('app.articleinfo');
 			};
 			$scope.changeArticleState = function (toEditing, approve) {				
 				var status;

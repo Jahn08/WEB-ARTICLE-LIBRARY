@@ -62,13 +62,21 @@ namespace WebArticleLibrary.Controllers
 		{
 			var confirmationId = Guid.NewGuid();
 
-			using (var userStore = new UserStore())
-			{
-				userStore.CreateAsync(user, confirmationId).Wait();
-			}
+            using (var userStore = new UserStore())
+            {
+                userStore.CreateAsync(user, confirmationId).Wait();
 
-			MailHelper.SendConfirmationEmail("Registration", Properties.Resources.Authentication_Register_Message,
-				"confirmuser", user, confirmationId);
+                try
+                {
+                    MailHelper.SendConfirmationEmail("Registration", Properties.Resources.Authentication_Register_Message,
+                        "confirmuser", user, confirmationId);
+                }
+                catch {
+                    userStore.DeleteAsync(user).Wait();
+                    throw;
+                }
+            }
+            			
 			return Ok();
 		}
 

@@ -73,7 +73,15 @@ namespace WebArticleLibrary.Helpers
 
 		public Task DeleteAsync(UserInfo user)
 		{
-			return Task.Run(() => db.USER.Remove((USER)user));
+			return Task.Run(() => {
+                var _user = db.USER.FirstOrDefault(u => u.EMAIL == user.email);
+
+                if (_user != null)
+                {
+                    db.USER.Remove(_user);
+                    db.SaveChanges();
+                }
+            });
 		}
 
 		public void Dispose()

@@ -33,7 +33,7 @@
 
 					if (commandState) {
 						commandCache[key] = commandState;
-					} else if (commandValue.length > 0 && commandValue !== 'false') {
+                    } else if (commandValue && commandValue.length > 0 && commandValue !== 'false') {
 						commandCache[key] = commandValue;
 					} else {
 						commandCache[key] = false;
@@ -92,7 +92,8 @@
 				if (options.activeToolbarClass) {
 					$(options.toolbarSelector).find(toolbarBtnSelector).each(function () {
 						var command = $(this).data(options.commandRole);
-						var commandNoArgs; // Temporarily store index, replace with command.
+                        command = command.split(' ').shift();
+                        var commandNoArgs; // Temporarily store index, replace with command.
 
 						if ((commandNoArgs = command.indexOf(' ')) >= 0) {
 							commandNoArgs = command.slice(0, commandNoArgs);
@@ -107,7 +108,7 @@
 							$(this).removeClass(options.activeToolbarClass);
 						}
 					});
-					if (options.setRealFontSize !== null) {
+                    if (options.setRealFontSize !== null && options.setRealFontSize !== undefined) {
 						options.setRealFontSize(selectedRange);
 					}
 				}

@@ -159,7 +159,7 @@
 					$scope.filtered = [];
 				};
 				$scope.goToArticle = function (id, commentId) {
-					var url = $state.href("app.articleview", { id, commentId });
+                    var url = $state.href("app.articleview", { id: id, commentId: commentId });
 					window.open(url);
 				};
 
@@ -176,7 +176,7 @@
 				$scope.notifications = data.notifications;
 
 				$scope.toHistory = function (articleId, historyId) {
-					var url = $state.href("app.articleview", { historyId, id: articleId });
+                    var url = $state.href("app.articleview", { historyId: historyId, id: articleId });
 					window.open(url);
 				}
 

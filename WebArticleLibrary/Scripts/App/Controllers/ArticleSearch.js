@@ -83,7 +83,7 @@
 
 				var category;
 
-				if ((category = $stateParams.category) && !$scope.allCategories.includes(category))
+				if ((category = $stateParams.category) && $scope.allCategories.indexOf(category) == -1)
 					$scope.allCategories.push(category);
 
 				$timeout(function () {

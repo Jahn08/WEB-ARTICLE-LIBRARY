@@ -62,7 +62,7 @@
 										controller: "ArticleHistoryModalCtrl",
 										resolve: {
 											data: {
-												id,
+												id: id,
 												data: data,
 												articleName: art.name,
 												articleApproved: art.status == ArticleReqFactory.ST_APPROVED,
