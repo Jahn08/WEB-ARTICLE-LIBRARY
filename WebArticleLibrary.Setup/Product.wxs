@@ -67,7 +67,7 @@
 		</Property>
 		<Property Id="ASPNETREGIIS" Secure="yes">
 			<DirectorySearch Path="[FRAMEWORKBASEPATH]" Depth="4" Id="FindAspNetRegIis">
-                <FileSearch Name="aspnet_regiis.exe" MinVersion="2.0.5"/>
+                <FileSearch Name="aspnet_regiis.exe" MinVersion="4"/>
             </DirectorySearch>
 		</Property>		
 			
