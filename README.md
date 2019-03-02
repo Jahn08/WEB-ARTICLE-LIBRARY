@@ -26,17 +26,16 @@ Administrators can block other users or make them administrators (as well as ret
 
 The application is dependent on .NET Framework ([read more](#headPrerequisites)) along with SQL Server ([read more](#headSettingUpDev)).
 
-There is an MSI-installer for the application lying in the folder WebArticleLibrary.Setup/bin/Release. Firstly, the installer lets opt for the names of the application site and its pool on IIS7. Further, components for the connection string should be set up, namely: an SQL Server name, a database name and preferences for logging in the database (user/password or the integrated security mode) ([how to configure the connection string manually](#headConfiguration)). The installer virtually repeats [this process](https://technet.microsoft.com/en-us/library/cc772042(v=ws.10).aspx).
+There is an MSI-installer for the application lying in the folder WebArticleLibrary.Setup/bin/Release. Firstly, the installer lets opt for the names of the application site and its pool on IIS7. Further, components for the connection string should be set up, namely: an SQL Server name, a database name and preferences for logging in the database (user/password or the integrated security mode; in both cases, providing the database is not existent, [the user's rights for the SQL Server should be set properly](#headDatabase)) ([how to configure the connection string manually](#headConfiguration)). The installer virtually repeats [this process](https://technet.microsoft.com/en-us/library/cc772042(v=ws.10).aspx).
 
 The first user registered in the application will be granted administrative rights.
-
 ## Developing
 
 ### Built with
 
 * [Entity Framework 6.1.3](https://www.nuget.org/packages/EntityFramework/6.1.3)
 * [Angular 1.6.4](https://www.nuget.org/packages/AngularJS.Core/1.6.4)
-* [Bootstrap 3.3.7](https://www.nuget.org/packages/bootstrap/3.3.7)
+* [Bootstrap 3.4.1](https://www.nuget.org/packages/bootstrap/3.4.1)
 * [Font Awesome 4.7.0](https://www.nuget.org/packages/FontAwesome/4.7.0)
 * [jQuery 2.0.3](https://www.nuget.org/packages/jQuery/2.0.3)
 * [Bootstrap-wysiwyg 1.04](https://www.nuget.org/packages/Bootstrap.Wysiwyg/1.0.4)
@@ -47,7 +46,8 @@ The first user registered in the application will be granted administrative righ
 ### <a name="headPrerequisites"></a>Prerequisites
 
 * [.NET Framework 4.5.2](https://www.microsoft.com/en-ca/download/details.aspx?id=42642)
-* The project was developed in MS Visual Studio 2015 ([the product page](https://www.visualstudio.com/ru/downloads/?rr=https%3A%2F%2Fwww.microsoft.com%2Fru-ru%2FSoftMicrosoft%2Fvs2015ExpressforW10.aspx))
+* The project was developed in MS Visual Studio 2015 ([the product page](https://www.visualstudio.com/ru/downloads/?rr=https%3A%2F%2Fwww.microsoft.com%2Fru-ru%2FSoftMicrosoft%2Fvs2015ExpressforW10.aspx)) and adapted to MS Visual Studio 2017 later
+* The installer project is built by [WiX Toolset v3.11](https://github.com/wixtoolset/wix3/releases/tag/wix3111rtm) 
 
 ### <a name="headSettingUpDev"></a>Setting up Dev
 
@@ -57,13 +57,13 @@ The developer computer has to have an access to MS SQL Server installed to deplo
 
 ### Deploying / Publishing
 
-To build a new version of the installer project, one should take advantage of the next command in the project folder:
-*msbuild /t:Build;CreateInstaller;DeleteTmpFiles Setup.build*. Providing that the default configuration for building is "Release|Any CPU", the command prompt used for the process shouldn't be of the x64 version. Otherwise, there will be a necessity to add the respective platform configuration to the solution. Note, that if there are new targets added in the Setup.build file and necessary to be included in the process, they have to be listed in the expression too.
+To build a new version of the installer [WiX-project](#headPrerequisites), one should take advantage of the next command in the project folder:
+*msbuild /t:Build;CreateInstaller;DeleteTmpFiles Setup.build*. Providing that the default configuration for building is "Release|Any CPU", the command prompt used for the process shouldn't be of the x64 version. Otherwise, there will be a necessity to add the respective platform configuration to the solution. Note, as long as there are new targets added in the Setup.build file and necessary to be included in the process, they have to be listed in the expression too.
 
 After building another version of the installer, the respective MSI-file should come up in the folder WebArticleLibrary.Setup/bin/Release alongside a renewed file cab1.cab. Both of them ought to be stored together as they take part in the process of installing.
 
 Should there any mistakes arise during the processes of installing or uninstalling, the next command might help out with logging such activities:
-*msiexec /i "WebArticleLibrary.Setup.msi" /l*v "log.log"*
+*msiexec /i "WebArticleLibrary.Setup.msi" /l\*v "log.log"*
 
 ## <a name="headConfiguration"></a>Configuration
 
