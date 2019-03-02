@@ -3,12 +3,14 @@ namespace WebArticleLibrary.Model
 	using System;
 	using System.Data.Entity;
 	using System.Linq;
+	using WebArticleLibrary.Model.Migrations;
 
 	public partial class ArticleLibraryContext : DbContext, IDisposable
 	{
 		public ArticleLibraryContext()
 			: base("name=WebArticleLib_DBConnection")
 		{
+			Database.SetInitializer(new MigrateDatabaseToLatestVersion<ArticleLibraryContext, Configuration>());
 		}
 
 		public delegate void OnNotificationAdded(USER_NOTIFICATION[] etities);
